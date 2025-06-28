@@ -7,6 +7,7 @@ import { RootStackParamList } from '.';
 import TabNavigator from './tab-navigator';
 import Home from '../screens/home';
 import RelatorioAnual from '~/screens/relatorio/relatorioAnual';
+import Conta from '~/screens/conta';
 
 type Props = StackScreenProps<RootStackParamList, 'DrawerNavigator'>;
 
@@ -27,6 +28,15 @@ export default function DrawerNavigator({ navigation }: Props) {
       <Drawer.Screen
         name="Relatório Anual"
         component={RelatorioAnual}
+        options={{
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="home-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Conta"
+        component={Conta}
         options={{
           drawerIcon: ({ size, color }) => (
             <Ionicons name="home-outline" size={size} color={color} />
