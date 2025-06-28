@@ -1,7 +1,7 @@
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { StackScreenProps } from '@react-navigation/stack';
-import { HeaderButton } from 'components/HeaderButton';
+import { HeaderButton } from '~/components/HeaderButton';
 
 import { RootStackParamList } from '.';
 import TabNavigator from './tab-navigator';
