@@ -1,9 +1,9 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import Inicio from '~/screens/auth/inicio';
-import Login from '~/screens/auth/login';
-import Register from '~/screens/auth/register';
-import RequestPassword from '~/screens/auth/requestPassword';
-import ModifyPassword from '~/screens/auth/modifyPassword';
+import Inicio from '~/screens/Auth/Inicio';
+import Login from '~/screens/Auth/Login';
+import Register from '~/screens/Auth/Register';
+import RequestPassword from '~/screens/Auth/RequestPassword';
+import ModifyPassword from '~/screens/Auth/ModifyPassword';
 
 export type AuthStackParamList = {
   'Início': undefined;
