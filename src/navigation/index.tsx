@@ -1,5 +1,4 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import Modal from '../screens/modal';
 import DrawerNavigator from './drawer-navigator';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, useAppSelector } from '~/store';
@@ -34,11 +33,6 @@ export default function RootStack() {
         name="DrawerNavigator"
         component={DrawerNavigator}
         options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Modal"
-        component={Modal}
-        options={{ presentation: 'modal', headerLeft: () => null }}
       />
     </Stack.Navigator>
   );
