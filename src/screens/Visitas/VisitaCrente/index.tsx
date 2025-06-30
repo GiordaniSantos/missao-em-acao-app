@@ -1,6 +1,3 @@
-// src/screens/VisitaCrente.tsx (ou onde quer que seu componente esteja)
-
-import React from 'react';
 import GenericItem from '~/components/GenericItem';
 import GenericScreen from '~/components/GenericScreen';
 

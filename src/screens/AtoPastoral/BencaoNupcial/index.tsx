@@ -1,17 +1,17 @@
 import GenericItem from '~/components/GenericItem';
 import GenericScreen from '~/components/GenericScreen';
 
-export default function VisitaNaoCrente() {
+export default function BencaoNupcial() {
     return (
         <GenericScreen
-            apiPath="incredulo"
-            itemName="Visita ao Não Crente"
+            apiPath="bencao-nupcial"
+            itemName="Benção Nupcial"
             renderItemComponent={GenericItem}
             itemComponentProps={{
-                textoAntesHora: "Visita realizada no dia",
-                textoPosQtd: "não crentes"
+                textoAntesHora: "Realizado no dia",
+                textoPosQtd: "Benção Nupcial"
             }}
-            modalTitle="Editar Data de Visita ao Não Crente"
+            modalTitle="Editar Data de Benção Nupcial"
             withNomeOnModal={true}
         />
     );

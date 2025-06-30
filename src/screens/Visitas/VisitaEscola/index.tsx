@@ -1,17 +1,17 @@
 import GenericItem from '~/components/GenericItem';
 import GenericScreen from '~/components/GenericScreen';
 
-export default function VisitaNaoCrente() {
+export default function VisitaEscola() {
     return (
         <GenericScreen
-            apiPath="incredulo"
-            itemName="Visita ao Não Crente"
+            apiPath="escola"
+            itemName="Visita à Escola"
             renderItemComponent={GenericItem}
             itemComponentProps={{
                 textoAntesHora: "Visita realizada no dia",
-                textoPosQtd: "não crentes"
+                textoPosQtd: "escola"
             }}
-            modalTitle="Editar Data de Visita ao Não Crente"
+            modalTitle="Editar Data de Visita à Escola"
             withNomeOnModal={true}
         />
     );
