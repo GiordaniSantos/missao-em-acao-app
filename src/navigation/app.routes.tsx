@@ -2,7 +2,7 @@ import React, { useState, useEffect, Component } from 'react';
 import { useDispatch } from 'react-redux';
 import { Text, View, StyleSheet, StatusBar, Modal, TouchableOpacity, Image, TouchableWithoutFeedback, Linking, ImageSourcePropType } from 'react-native';
 import Icon from '@expo/vector-icons/FontAwesome5';
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerNavigationProp } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView, DrawerItem, DrawerNavigationProp } from '@react-navigation/drawer';
 import { useNavigation, ParamListBase, useIsFocused } from '@react-navigation/native';
 import VisitaCrente from '~/screens/Visitas/VisitaCrente';
 import VisitaNaoCrente from '~/screens/Visitas/VisitaNaoCrente';
@@ -113,10 +113,7 @@ const getActiveRouteState = (routes: any[], index: number, name: string): boolea
   return routes[index]?.name?.trim().toLowerCase() === name.trim().toLowerCase();
 };
 
-interface CustomDrawerContentProps {
-  state: any;
-  navigation: DrawerNavigationProp<ParamListBase>;
-}
+interface CustomDrawerContentProps extends DrawerContentComponentProps{}
 
 const CustomDrawerContent: React.FC<CustomDrawerContentProps> = (props) => {
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>();
