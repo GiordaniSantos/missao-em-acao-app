@@ -66,26 +66,26 @@ const routesDrawerItem: DrawerItemConfig[] = [
 ];
 
 const routesMinistracaoDrawerItem: DrawerItemConfig[] = [
-  { name: 'Estudos', labelStyle: { marginLeft: -5 }, style: { marginLeft: 20, marginRight: 20 }, icon: 'book' },
-  { name: 'Sermões', labelStyle: { marginLeft: -5 }, style: { marginLeft: 20, marginRight: 20 }, icon: 'user-tie' },
-  { name: 'Estudos Biblicos', labelStyle: { marginLeft: -3 }, style: { marginLeft: 20, marginRight: 20 }, icon: 'bible' },
-  { name: 'Discipulados', labelStyle: { marginLeft: -10 }, style: { marginLeft: 20, marginRight: 20 }, icon: 'people-arrows' },
+  { name: 'Estudos', labelStyle: { marginLeft: 5 }, style: { marginTop:5, marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'book' },
+  { name: 'Sermões', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'user-tie' },
+  { name: 'Estudos Biblicos', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'bible' },
+  { name: 'Discipulados', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'people-arrows' },
 ];
 
 const routesAtoPastoralDrawerItem: DrawerItemConfig[] = [
-  { name: 'Batismos Infantis', labelStyle: { marginLeft: -5 }, style: { marginLeft: 20, marginRight: 20 }, icon: 'child' },
-  { name: 'Batismos e Profissões de Fé', labelStyle: { marginLeft: -5 }, style: { marginLeft: 20, marginRight: 20 }, icon: 'praying-hands' },
-  { name: 'Benções Nupciais', labelStyle: { marginLeft: -3 }, style: { marginLeft: 20, marginRight: 20 }, icon: 'hand-holding-heart' },
-  { name: 'Santas Ceias', labelStyle: {}, style: { marginLeft: 20, marginRight: 20 }, icon: 'wine-glass-alt' },
+  { name: 'Batismos Infantis', labelStyle: { marginLeft: 5 }, style: { marginTop:5, marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'child' },
+  { name: 'Batismos e Profissões de Fé', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'praying-hands' },
+  { name: 'Benções Nupciais', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'hand-holding-heart' },
+  { name: 'Santas Ceias', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'wine-glass-alt' },
 ];
 
 const routesVisitacaoDrawerItem: DrawerItemConfig[] = [
-  { name: 'Visitas aos Crentes', labelStyle: { marginLeft: -5 }, style: { marginLeft: 20, marginRight: 20 }, icon: 'cross' },
-  { name: 'Visitas aos Não Crentes', labelStyle: { marginLeft: -5 }, style: { marginLeft: 20, marginRight: 20 }, icon: 'heart-broken' },
-  { name: 'Visitas aos Presídios', labelStyle: { marginLeft: -5 }, style: { marginLeft: 20, marginRight: 20 }, icon: 'user-lock' },
-  { name: 'Visitas aos Enfermos', labelStyle: { marginLeft: -5 }, style: { marginLeft: 20, marginRight: 20 }, icon: 'syringe' },
-  { name: 'Visitas aos Hospitais', labelStyle: { marginLeft: -5 }, style: { marginLeft: 20, marginRight: 20 }, icon: 'hospital' },
-  { name: 'Visitas às Escolas', labelStyle: { marginLeft: -5 }, style: { marginLeft: 20, marginRight: 20 }, icon: 'school' },
+  { name: 'Visitas aos Crentes', labelStyle: { marginLeft: 5 }, style: { marginTop:5, marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'cross' },
+  { name: 'Visitas aos Não Crentes', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'heart-broken' },
+  { name: 'Visitas aos Presídios', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'user-lock' },
+  { name: 'Visitas aos Enfermos', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'syringe' },
+  { name: 'Visitas aos Hospitais', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'hospital' },
+  { name: 'Visitas às Escolas', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'school' },
 ];
 
 const routeExpansionMap: { [key: string]: { showVisitacao: boolean; showAtoPastoral: boolean; showPregacao: boolean } } = {
@@ -155,6 +155,7 @@ const CustomDrawerContent: React.FC<CustomDrawerContentProps> = (props) => {
               activeBackgroundColor='#0f5d39'
               activeTintColor='#fff'
               labelStyle={route.labelStyle}
+              style={{marginBottom: 2}}
               focused={getActiveRouteState(props.state.routes, props.state.index, route.name)}
               icon={({ color }) => (
                 <Icon size={21} name={route.icon as any} style={{ color: color }} />
@@ -262,6 +263,11 @@ const CustomDrawerContent: React.FC<CustomDrawerContentProps> = (props) => {
 
           <DrawerItem
             label="Conta"
+            activeBackgroundColor='#0f5d39'
+            activeTintColor='#fff'
+            labelStyle={{ marginLeft: 7 }}
+            style={{marginBottom: 2}} 
+            focused={getActiveRouteState(props.state.routes, props.state.index, 'Conta')}
             icon={({ color }) => (
               <Icon size={21} name={'user-circle'} style={{ color: color }} />
             )}
@@ -269,6 +275,7 @@ const CustomDrawerContent: React.FC<CustomDrawerContentProps> = (props) => {
           />
           <DrawerItem
             label="Sair"
+            labelStyle={{ marginLeft: 7 }}
             icon={({ color }) => <Icon size={21} name={'sign-out-alt'} style={{ color: color }} />}
             onPress={() => dispatch(actions.logout())}
           />
