@@ -4,12 +4,10 @@ import { Text, View, StyleSheet, StatusBar, Modal, TouchableOpacity, Image, Touc
 import Icon from '@expo/vector-icons/FontAwesome5';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerNavigationProp } from '@react-navigation/drawer';
 import { useNavigation, ParamListBase, useIsFocused } from '@react-navigation/native';
-
-// Importar todas as páginas
 import VisitaCrente from '~/screens/Visitas/VisitaCrente';
 import VisitaNaoCrente from '~/screens/Visitas/VisitaNaoCrente';
-import VisitaPresidio from '~/screens/Visitas/VisitaEnfermo'; // Verifique se o nome do arquivo está correto (VisitaEnfermo ou VisitaPresidio)
-import VisitaEnfermo from '~/screens/Visitas/VisitaPresidio'; // Verifique se o nome do arquivo está correto (VisitaEnfermo ou VisitaPresidio)
+import VisitaPresidio from '~/screens/Visitas/VisitaEnfermo';
+import VisitaEnfermo from '~/screens/Visitas/VisitaPresidio';
 import VisitaHospital from '~/screens/Visitas/VisitaHospital';
 import VisitaEscola from '~/screens/Visitas/VisitaEscola';
 import BatismoInfantil from '~/screens/AtoPastoral/BatismoInfantil';
@@ -23,7 +21,7 @@ import RelatorioAnual from '~/screens/Relatorio/RelatorioAnual';
 import Discipulado from '~/screens/Ministracao/Discipulado';
 import Conta from '~/screens/Conta';
 
-const image: ImageSourcePropType = require('../../assets/logo-menu.png');
+const image: ImageSourcePropType = require('../../assets/imgs/logo-menu.png');
 
 import { AppDispatch } from '~/store';
 import { actions } from '~/store/auth/auth-slice';
@@ -62,9 +60,9 @@ const routes: Route[] = [
 ];
 
 const routesDrawerItem: DrawerItemConfig[] = [
-  { name: 'Início', labelStyle: { marginLeft: -9 }, icon: 'home' },
-  { name: 'Relatório Anual', labelStyle: { marginLeft: -9 }, icon: 'chart-bar' },
-  { name: 'Frequência aos Domingos', labelStyle: { marginLeft: -9 }, icon: 'calendar-check' },
+  { name: 'Início', labelStyle: { marginLeft: 4 }, icon: 'home' },
+  { name: 'Relatório Anual', labelStyle: { marginLeft: 4 }, icon: 'chart-bar' },
+  { name: 'Frequência aos Domingos', labelStyle: { marginLeft: 4 }, icon: 'calendar-check' },
 ];
 
 const routesMinistracaoDrawerItem: DrawerItemConfig[] = [
@@ -149,131 +147,132 @@ const CustomDrawerContent: React.FC<CustomDrawerContentProps> = (props) => {
           <Image source={image} style={styles.user} />
           <Text style={styles.title}>Missão em Ação</Text>
         </View>
+        <View style={styles.containerMenus}>
+          {routesDrawerItem.map((route, index) => (
+            <DrawerItem
+              label={route.name}
+              key={index}
+              activeBackgroundColor='#0f5d39'
+              activeTintColor='#fff'
+              labelStyle={route.labelStyle}
+              focused={getActiveRouteState(props.state.routes, props.state.index, route.name)}
+              icon={({ color }) => (
+                <Icon size={21} name={route.icon as any} style={{ color: color }} />
+              )}
+              onPress={() => navigation.navigate(route.name)}
+            />
+          ))}
 
-        {routesDrawerItem.map((route, index) => (
+          {isShowAtoPastoral && <View style={styles.separator} />}
           <DrawerItem
-            label={route.name}
-            key={index}
+            label="Ministração"
+            labelStyle={{ marginLeft: 7 }}
             activeBackgroundColor='#0f5d39'
             activeTintColor='#fff'
-            labelStyle={route.labelStyle}
-            focused={getActiveRouteState(props.state.routes, props.state.index, route.name)}
+            focused={getActiveRouteState(props.state.routes, props.state.index, 'Ministração')}
             icon={({ color }) => (
-              <Icon size={21} name={route.icon as any} style={{ color: color }} />
+              <Icon size={23} name={isShowAtoPastoral ? 'angle-up' : 'angle-down'} style={{ color: color, marginLeft: 2 }} />
             )}
-            onPress={() => navigation.navigate(route.name)}
+            onPress={() => setShowAtoPastoral(!isShowAtoPastoral)}
           />
-        ))}
-
-        {isShowAtoPastoral && <View style={styles.separator} />}
-        <DrawerItem
-          label="Ministração"
-          labelStyle={{ marginLeft: -2 }}
-          activeBackgroundColor='#0f5d39'
-          activeTintColor='#fff'
-          focused={getActiveRouteState(props.state.routes, props.state.index, 'Ministração')}
-          icon={({ color }) => (
-            <Icon size={23} name={isShowAtoPastoral ? 'angle-up' : 'angle-down'} style={{ color: color, marginLeft: 4 }} />
+          {isShowAtoPastoral && (
+            <View>
+              {routesMinistracaoDrawerItem.map((route, index) => (
+                <DrawerItem
+                  label={route.name}
+                  key={index}
+                  activeBackgroundColor='#0f5d39'
+                  activeTintColor='#fff'
+                  labelStyle={route.labelStyle}
+                  style={route.style}
+                  focused={getActiveRouteState(props.state.routes, props.state.index, route.name)}
+                  icon={({ color }) => (
+                    <Icon size={21} name={route.icon as any} style={{ color: color }} />
+                  )}
+                  onPress={() => navigation.navigate(route.name)}
+                />
+              ))}
+            </View>
           )}
-          onPress={() => setShowAtoPastoral(!isShowAtoPastoral)}
-        />
-        {isShowAtoPastoral && (
-          <View>
-            {routesMinistracaoDrawerItem.map((route, index) => (
-              <DrawerItem
-                label={route.name}
-                key={index}
-                activeBackgroundColor='#0f5d39'
-                activeTintColor='#fff'
-                labelStyle={route.labelStyle}
-                style={route.style}
-                focused={getActiveRouteState(props.state.routes, props.state.index, route.name)}
-                icon={({ color }) => (
-                  <Icon size={21} name={route.icon as any} style={{ color: color }} />
-                )}
-                onPress={() => navigation.navigate(route.name)}
-              />
-            ))}
-          </View>
-        )}
 
-        {(isShowAtoPastoral || isShowPregacao) && <View style={styles.separator} />}
-        <DrawerItem
-          label="Ato Pastoral"
-          labelStyle={{ marginLeft: -2 }}
-          activeBackgroundColor='#0f5d39'
-          activeTintColor='#fff'
-          focused={getActiveRouteState(props.state.routes, props.state.index, 'Ato Pastoral')}
-          icon={({ color }) => (
-            <Icon size={23} name={isShowPregacao ? 'angle-up' : 'angle-down'} style={{ color: color, marginLeft: 4 }} />
+          {(isShowAtoPastoral || isShowPregacao) && <View style={styles.separator} />}
+          <DrawerItem
+            label="Ato Pastoral"
+            labelStyle={{ marginLeft: 7 }}
+            activeBackgroundColor='#0f5d39'
+            activeTintColor='#fff'
+            focused={getActiveRouteState(props.state.routes, props.state.index, 'Ato Pastoral')}
+            icon={({ color }) => (
+              <Icon size={23} name={isShowPregacao ? 'angle-up' : 'angle-down'} style={{ color: color, marginLeft: 2 }} />
+            )}
+            onPress={() => setShowPregacao(!isShowPregacao)}
+          />
+          {isShowPregacao && (
+            <View>
+              {routesAtoPastoralDrawerItem.map((route, index) => (
+                <DrawerItem
+                  label={route.name}
+                  key={index}
+                  activeBackgroundColor='#0f5d39'
+                  activeTintColor='#fff'
+                  labelStyle={route.labelStyle}
+                  style={route.style}
+                  focused={getActiveRouteState(props.state.routes, props.state.index, route.name)}
+                  icon={({ color }) => (
+                    <Icon size={21} name={route.icon as any} style={{ color: color }} />
+                  )}
+                  onPress={() => navigation.navigate(route.name)}
+                />
+              ))}
+            </View>
           )}
-          onPress={() => setShowPregacao(!isShowPregacao)}
-        />
-        {isShowPregacao && (
-          <View>
-            {routesAtoPastoralDrawerItem.map((route, index) => (
-              <DrawerItem
-                label={route.name}
-                key={index}
-                activeBackgroundColor='#0f5d39'
-                activeTintColor='#fff'
-                labelStyle={route.labelStyle}
-                style={route.style}
-                focused={getActiveRouteState(props.state.routes, props.state.index, route.name)}
-                icon={({ color }) => (
-                  <Icon size={21} name={route.icon as any} style={{ color: color }} />
-                )}
-                onPress={() => navigation.navigate(route.name)}
-              />
-            ))}
-          </View>
-        )}
 
-        {(isShowPregacao || isShowVisitacao) && <View style={styles.separator} />}
-        <DrawerItem
-          label="Visitação"
-          labelStyle={{ marginLeft: -2 }}
-          activeBackgroundColor='#0f5d39'
-          activeTintColor='#fff'
-          focused={getActiveRouteState(props.state.routes, props.state.index, 'Visitação')}
-          icon={({ color }) => (
-            <Icon size={23} name={isShowVisitacao ? 'angle-up' : 'angle-down'} style={{ color: color, marginLeft: 4 }} />
+          {(isShowPregacao || isShowVisitacao) && <View style={styles.separator} />}
+          <DrawerItem
+            label="Visitação"
+            labelStyle={{ marginLeft: 7 }}
+            activeBackgroundColor='#0f5d39'
+            activeTintColor='#fff'
+            focused={getActiveRouteState(props.state.routes, props.state.index, 'Visitação')}
+            icon={({ color }) => (
+              <Icon size={23} name={isShowVisitacao ? 'angle-up' : 'angle-down'} style={{ color: color, marginLeft: 2 }} />
+            )}
+            onPress={() => setShowVisitacao(!isShowVisitacao)}
+          />
+          {isShowVisitacao && (
+            <View>
+              {routesVisitacaoDrawerItem.map((route, index) => (
+                <DrawerItem
+                  label={route.name}
+                  key={index}
+                  activeBackgroundColor='#0f5d39'
+                  activeTintColor='#fff'
+                  labelStyle={route.labelStyle}
+                  style={route.style}
+                  focused={getActiveRouteState(props.state.routes, props.state.index, route.name)}
+                  icon={({ color }) => (
+                    <Icon size={21} name={route.icon as any} style={{ color: color }} />
+                  )}
+                  onPress={() => navigation.navigate(route.name)}
+                />
+              ))}
+            </View>
           )}
-          onPress={() => setShowVisitacao(!isShowVisitacao)}
-        />
-        {isShowVisitacao && (
-          <View>
-            {routesVisitacaoDrawerItem.map((route, index) => (
-              <DrawerItem
-                label={route.name}
-                key={index}
-                activeBackgroundColor='#0f5d39'
-                activeTintColor='#fff'
-                labelStyle={route.labelStyle}
-                style={route.style}
-                focused={getActiveRouteState(props.state.routes, props.state.index, route.name)}
-                icon={({ color }) => (
-                  <Icon size={21} name={route.icon as any} style={{ color: color }} />
-                )}
-                onPress={() => navigation.navigate(route.name)}
-              />
-            ))}
-          </View>
-        )}
-        {isShowVisitacao && <View style={styles.separator} />}
+          {isShowVisitacao && <View style={styles.separator} />}
 
-        <DrawerItem
-          label="Conta"
-          icon={({ color }) => (
-            <Icon size={21} name={'user-circle'} style={{ color: color }} />
-          )}
-          onPress={() => navigation.navigate("Conta")}
-        />
-        <DrawerItem
-          label="Sair"
-          icon={({ color }) => <Icon size={21} name={'sign-out-alt'} style={{ color: color }} />}
-          onPress={() => dispatch(actions.logout())}
-        />
+          <DrawerItem
+            label="Conta"
+            icon={({ color }) => (
+              <Icon size={21} name={'user-circle'} style={{ color: color }} />
+            )}
+            onPress={() => navigation.navigate("Conta")}
+          />
+          <DrawerItem
+            label="Sair"
+            icon={({ color }) => <Icon size={21} name={'sign-out-alt'} style={{ color: color }} />}
+            onPress={() => dispatch(actions.logout())}
+          />
+        </View>
       </View>
     </DrawerContentScrollView>
   );
@@ -364,6 +363,12 @@ export default class AppRoutes extends Component<{}, AppRoutesState> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginLeft: -15,
+    marginRight: -15,
+  },
+  containerMenus: {
+    marginLeft: 15,
+    marginRight: 15
   },
   userArea: {
     marginTop: -500,
