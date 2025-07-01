@@ -1,10 +1,8 @@
-// src/components/GenericScreen.tsx
-
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import api from '../services/api';
-import { showSweetAlert } from './sweetAlert';
+import SweetAlert, { showSweetAlert } from './sweetAlert';
 import { ShowAlertErroResponseApi } from './ShowAlertErrorResponseApi';
 import { actions, fetchRelatorios } from '~/store/dashboard/dashboard-slice';
 import { connect } from 'react-redux';
@@ -37,15 +35,20 @@ function GenericScreen({ apiPath, itemName, renderItemComponent: ItemComponent, 
     const [showModal, setShowModal] = useState(false);
     const [loadingItemBuscado, setLoadingItemBuscado] = useState(false);
     const [itemBuscado, setItemBuscado] = useState<ItemBuscado | null>(null);
+    const [loading, setLoading] = useState(true);
 
     const loadItems = useCallback(async () => {
+        setLoading(true);
         try {
             const res = await api.get(`/${apiPath}`);
             setItems(res.data.data || []);
         } catch (e: any) {
             ShowAlertErroResponseApi(e);
+            setItems([]);
+        } finally {
+            setLoading(false);
         }
-    }, [apiPath, itemName]);
+    }, [apiPath]);
 
     useEffect(() => {
         loadItems();
@@ -134,15 +137,25 @@ function GenericScreen({ apiPath, itemName, renderItemComponent: ItemComponent, 
         } finally {
             setLoadingItemBuscado(false);
         }
-    }, [apiPath, itemName]);
+    }, [apiPath]);
 
     const openEditModal = useCallback(async (id: string | number) => {
         await fetchItem(id);
         setShowModal(true);
     }, [fetchItem]);
 
+    if (loading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#0f5d39" />
+                <Text style={{ marginTop: 10 }}>Carregando os dados...</Text>
+            </View>
+        );
+    }
+
     return (
         <View style={styles.container}>
+            <SweetAlert />
             {itemBuscado && (
                 <UpdateModal
                     isVisible={showModal}
@@ -184,6 +197,12 @@ function GenericScreen({ apiPath, itemName, renderItemComponent: ItemComponent, 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#f8f9fc',
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: '#f8f9fc',
     },
     taskList: {

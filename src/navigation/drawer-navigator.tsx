@@ -7,6 +7,8 @@ import RelatorioAnual from '~/screens/Relatorio/RelatorioAnual';
 import Conta from '~/screens/Conta';
 import visitaCrente from '~/screens/Visitas/VisitaCrente';
 import VisitaNaoCrente from '~/screens/Visitas/VisitaNaoCrente';
+import VisitaPresidio from '~/screens/Visitas/VisitaPresidio';
+import VisitaEnfermo from '~/screens/Visitas/VisitaPresidio';
 
 type Props = StackScreenProps<RootStackParamList, 'DrawerNavigator'>;
 
@@ -45,6 +47,24 @@ export default function DrawerNavigator({ navigation }: Props) {
       <Drawer.Screen
         name="Visita ao Não Crente"
         component={VisitaNaoCrente}
+        options={{
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="home-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Visita ao Presídio"
+        component={VisitaPresidio}
+        options={{
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="home-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Visita ao Enfermo"
+        component={VisitaPresidio}
         options={{
           drawerIcon: ({ size, color }) => (
             <Ionicons name="home-outline" size={size} color={color} />

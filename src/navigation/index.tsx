@@ -5,6 +5,7 @@ import { AppDispatch, useAppSelector } from '~/store';
 import { useEffect } from 'react';
 import { actions, verifyUserLogged } from '~/store/auth/auth-slice';
 import AuthRoutes from './auth.routes';
+import AppRoutes from './app.routes';
 
 export type RootStackParamList = {
   DrawerNavigator: undefined;
@@ -28,12 +29,6 @@ export default function RootStack() {
   }
 
   return (
-    <Stack.Navigator initialRouteName="DrawerNavigator">
-      <Stack.Screen
-        name="DrawerNavigator"
-        component={DrawerNavigator}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
+    <AppRoutes/>
   );
 }
