@@ -4,7 +4,7 @@ import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/dat
 import moment from 'moment';
 import 'moment/locale/pt-br';
 import { useForm, Controller } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '~/store';
 
 interface Item {
   id: string;
@@ -39,7 +39,7 @@ function UpdateModal({ isVisible, onCancel, onUpdate, tituloHeader, loading, wit
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
-  const userId = useSelector((state: any) => state.auth.user.id as string | number);
+  const userId = useAppSelector((state: any) => state.auth.user.id as string | number);
 
   const getInitialDate = () => {
     return itemBuscado.created_at instanceof Date ? itemBuscado.created_at : (itemBuscado.created_at ? new Date(itemBuscado.created_at) : new Date());

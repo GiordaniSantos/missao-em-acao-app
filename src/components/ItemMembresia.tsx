@@ -2,34 +2,24 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { FontAwesome, FontAwesome5 } from '@expo/vector-icons'; 
+import Icon from '@expo/vector-icons/FontAwesome';
+import IconCheck from '@expo/vector-icons/MaterialCommunityIcons';
 
-
-interface GenericItemProps {
+interface ItemMembresiaProps {
   id: string;
-  created_at: string;
-  icon: 'atoPastoral' | string;
+  nome: string;
+  quantidade: number;
+  textoPosQtd: string;
+  created_at?: string;
   openModal: (id: string) => void;
-  onDelete?: (id: string) => void;
-  textoAntesHora: string;
-  nome?: string;
-  textoNome?: string;
+  onDelete: (id: string) => void;
 }
 
-
-function GenericItem(props: GenericItemProps) {
-  const { id, created_at, icon, openModal, onDelete, textoAntesHora, nome, textoNome } = props;
-
-  const resultadoData = created_at.split(' ');
-  const datePart = resultadoData[0];
-  const timePart = resultadoData[1];
-
-  const nameIcon = icon === 'atoPastoral' ? 'check' : 'user-check';
-
+const ItemMembresia: React.FC<ItemMembresiaProps> = (props) => {
   const getRightContent = () => {
     return (
-      <TouchableOpacity style={styles.right} onPress={() => openModal(id)}>
-        <FontAwesome name='edit' size={30} color='#FFF' />
+      <TouchableOpacity style={styles.right} onPress={() => props.openModal && props.openModal(props.id)}>
+        <Icon name='edit' size={30} color='#FFF' />
       </TouchableOpacity>
     );
   };
@@ -37,7 +27,7 @@ function GenericItem(props: GenericItemProps) {
   const getLeftContent = () => {
     return (
       <View style={styles.left}>
-        <FontAwesome name='trash' size={20} color='#FFF' style={styles.excludeIcon} />
+        <Icon name='trash' size={20} color='#FFF' style={styles.excludeIcon} />
         <Text style={styles.excludeText}>Excluir</Text>
       </View>
     );
@@ -45,31 +35,26 @@ function GenericItem(props: GenericItemProps) {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Swipeable renderRightActions={getRightContent} renderLeftActions={getLeftContent}  onSwipeableLeftOpen={() => onDelete && onDelete(id)}>
+      <Swipeable
+        renderRightActions={getRightContent}
+        renderLeftActions={getLeftContent}
+        onSwipeableLeftOpen={() => props.onDelete && props.onDelete(props.id)}
+      >
         <View style={styles.container}>
-          <View style={styles.cheackContainer}>
+          <View style={styles.checkContainer}>
             <View style={styles.done}>
-              <FontAwesome5 name={nameIcon} size={17} color='#FFF' />
+              <IconCheck name='account-multiple-check' size={20} color='#FFF' />
             </View>
           </View>
           <View>
-            <Text style={styles.desc}>
-              {textoAntesHora} {datePart}
-            </Text>
-            <Text style={styles.date}>às {timePart}h</Text>
-            <View style={{ flexDirection: 'row', flexGrow: 1 }}>
-              {nome && (
-                <Text numberOfLines={7} style={styles.date}>
-                  {textoNome ? textoNome : 'Visitado: '} {nome}
-                </Text>
-              )}
-            </View>
+            <Text style={styles.desc}>{props.nome}: {props.quantidade} {props.textoPosQtd}</Text>
+            {props.created_at && <Text style={styles.date}>{props.created_at}</Text>}
           </View>
         </View>
       </Swipeable>
     </GestureHandlerRootView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -86,17 +71,10 @@ const styles = StyleSheet.create({
     borderLeftColor: '#e3e6f0',
     borderWidth: 1,
   },
-  cheackContainer: {
+  checkContainer: {
     width: '20%',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  pending: {
-    height: 25,
-    width: 25,
-    borderRadius: 13,
-    borderWidth: 1,
-    borderColor: '#555',
   },
   done: {
     height: 30,
@@ -104,7 +82,7 @@ const styles = StyleSheet.create({
     borderRadius: 33,
     backgroundColor: '#4D7031',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   desc: {
     color: '#222',
@@ -113,7 +91,6 @@ const styles = StyleSheet.create({
   date: {
     color: '#555',
     fontSize: 12,
-    flex: 1,
   },
   right: {
     backgroundColor: '#4D7031',
@@ -148,4 +125,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GenericItem;
+export default ItemMembresia;

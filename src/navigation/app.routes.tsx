@@ -4,6 +4,7 @@ import { Text, View, StyleSheet, StatusBar, Modal, TouchableOpacity, Image, Touc
 import Icon from '@expo/vector-icons/FontAwesome5';
 import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView, DrawerItem, DrawerNavigationProp } from '@react-navigation/drawer';
 import { useNavigation, ParamListBase, useIsFocused } from '@react-navigation/native';
+import Membresia from '~/screens/Membresia';
 import VisitaCrente from '~/screens/Visitas/VisitaCrente';
 import VisitaNaoCrente from '~/screens/Visitas/VisitaNaoCrente';
 import VisitaPresidio from '~/screens/Visitas/VisitaEnfermo';
@@ -41,7 +42,7 @@ interface DrawerItemConfig {
 const routes: Route[] = [
   { name: 'Início', component: RelatorioAnual },
   { name: 'Relatório Anual', component: RelatorioAnual },
-  { name: 'Frequência aos Domingos', component: VisitaCrente },
+  { name: 'Frequência aos Domingos', component: Membresia },
   { name: 'Estudos', component: Estudo },
   { name: 'Sermões', component: Sermao },
   { name: 'Estudos Biblicos', component: EstudoBiblico },
