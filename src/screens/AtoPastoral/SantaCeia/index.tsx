@@ -12,7 +12,7 @@ export default function SantaCeia() {
                 textoPosQtd: "Santa Ceia"
             }}
             modalTitle="Editar Data de Santa Ceia"
-            withNomeOnModal={true}
+            withNomeOnModal={false}
         />
     );
 };

@@ -7,9 +7,11 @@ export default function EstudoBiblico() {
             apiPath="estudo-biblico"
             itemName="Estudo Biblico"
             renderItemComponent={GenericItem}
+            placeHolderCampoNome={"Assunto do Estudo Biblico"}
             itemComponentProps={{
                 textoAntesHora: "Realizado no dia",
-                textoPosQtd: "estudo"
+                textoPosQtd: "estudo",
+                textoNome: "Assunto: "
             }}
             modalTitle="Editar Data de Estudo Bíblico"
             withNomeOnModal={true}

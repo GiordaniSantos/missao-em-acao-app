@@ -27,10 +27,11 @@ interface GenericScreenProps {
     modalTitle: string;
     withNomeOnModal?: boolean;
     loadRelatorios: () => void;
+    placeHolderCampoNome?: string;
     FlatListProps?: { [key: string]: any };
 }
 
-function GenericScreen({ apiPath, itemName, renderItemComponent: ItemComponent, itemComponentProps, modalTitle, withNomeOnModal = true, loadRelatorios, FlatListProps }: GenericScreenProps) {
+function GenericScreen({ apiPath, itemName, renderItemComponent: ItemComponent, itemComponentProps, modalTitle, withNomeOnModal = true, loadRelatorios, placeHolderCampoNome, FlatListProps }: GenericScreenProps) {
     const [items, setItems] = useState<ItemData[]>([]);
     const [showModal, setShowModal] = useState(false);
     const [loadingItemBuscado, setLoadingItemBuscado] = useState(false);
@@ -163,6 +164,7 @@ function GenericScreen({ apiPath, itemName, renderItemComponent: ItemComponent, 
                     withNome={withNomeOnModal}
                     itemBuscado={itemBuscado}
                     tituloHeader={modalTitle}
+                    placeHolderCampoNome={placeHolderCampoNome}
                     onCancel={() => setShowModal(false)}
                     onUpdate={updateItem}
                 />

@@ -7,9 +7,11 @@ export default function BatismoProfissao() {
             apiPath="batismo-profissao"
             itemName="Batismo/Profissão de Fé"
             renderItemComponent={GenericItem}
+            placeHolderCampoNome={"Nome"}
             itemComponentProps={{
                 textoAntesHora: "Realizado no dia",
-                textoPosQtd: "Batismo/Profissão de Fé"
+                textoPosQtd: "Batismo/Profissão de Fé",
+                textoNome: "Nome: "
             }}
             modalTitle="Editar Data de Batismo/Profissão de Fé"
             withNomeOnModal={true}

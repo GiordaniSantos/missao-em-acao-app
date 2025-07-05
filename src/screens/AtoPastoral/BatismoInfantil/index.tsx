@@ -7,9 +7,11 @@ export default function BatismoInfantil() {
             apiPath="batismo-infantil"
             itemName="Batismo Infantil"
             renderItemComponent={GenericItem}
+            placeHolderCampoNome={"Nome"}
             itemComponentProps={{
                 textoAntesHora: "Realizado no dia",
-                textoPosQtd: "Batismo Infantil"
+                textoPosQtd: "Batismo Infantil",
+                textoNome: "Nome: "
             }}
             modalTitle="Editar Data de Batismo Infantil"
             withNomeOnModal={true}

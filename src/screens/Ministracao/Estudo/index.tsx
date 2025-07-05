@@ -7,9 +7,11 @@ export default function Estudo() {
             apiPath="estudo"
             itemName="Estudo"
             renderItemComponent={GenericItem}
+            placeHolderCampoNome={"Assunto do Estudo"}
             itemComponentProps={{
                 textoAntesHora: "Realizado no dia",
-                textoPosQtd: "estudo"
+                textoPosQtd: "estudo",
+                textoNome: "Assunto: "
             }}
             modalTitle="Editar Data de Estudo"
             withNomeOnModal={true}

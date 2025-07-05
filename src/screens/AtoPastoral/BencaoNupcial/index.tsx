@@ -7,9 +7,11 @@ export default function BencaoNupcial() {
             apiPath="bencao-nupcial"
             itemName="Benção Nupcial"
             renderItemComponent={GenericItem}
+            placeHolderCampoNome={"Nome"}
             itemComponentProps={{
                 textoAntesHora: "Realizado no dia",
-                textoPosQtd: "Benção Nupcial"
+                textoPosQtd: "Benção Nupcial",
+                textoNome: "Nome: "
             }}
             modalTitle="Editar Data de Benção Nupcial"
             withNomeOnModal={true}

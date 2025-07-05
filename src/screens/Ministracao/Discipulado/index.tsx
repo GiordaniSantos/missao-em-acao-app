@@ -7,9 +7,11 @@ export default function Discipulado() {
             apiPath="discipulado"
             itemName="Discipulado"
             renderItemComponent={GenericItem}
+            placeHolderCampoNome={"Nome do Discipulado"}
             itemComponentProps={{
                 textoAntesHora: "Realizado no dia",
-                textoPosQtd: "discipulado"
+                textoPosQtd: "discipulado",
+                textoNome: "Nome: "
             }}
             modalTitle="Editar Data de Discipulado"
             withNomeOnModal={true}
