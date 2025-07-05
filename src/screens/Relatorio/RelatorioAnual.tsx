@@ -156,7 +156,6 @@ function RelatorioAnual({ navigation }: RelatorioAnualProps) {
                             style={[styles.dropdown2BtnStyle, styles.elevation]}
                             placeholderStyle={styles.dropdown2BtnTxtStyle}
                             selectedTextStyle={styles.dropdown2BtnTxtStyle}
-                            iconStyle={{marginRight: 15}}
                             data={yearsData}
                             labelField="label"
                             valueField="value"
@@ -171,6 +170,7 @@ function RelatorioAnual({ navigation }: RelatorioAnualProps) {
                             containerStyle={styles.dropdown2DropdownStyle}
                             itemContainerStyle={styles.dropdown2RowStyle}
                             itemTextStyle={styles.dropdown2RowTxtStyle}
+                            activeColor='#093822'
                         />
                     </View>
                 </View>
@@ -319,9 +319,13 @@ const styles = StyleSheet.create({
     },
     dropdown2BtnStyle: {
         width: '100%',
-        height: 50,
         backgroundColor: '#0f5d39',
         borderRadius: 8,
+        height: 45,
+        paddingHorizontal: 10,
+    },
+    dropdownItem: {
+        height: 45,
     },
     dropdown2BtnTxtStyle: {
         color: '#FFF',
@@ -331,9 +335,12 @@ const styles = StyleSheet.create({
     dropdown2DropdownStyle: {
         backgroundColor: '#0f5d39',
         borderBottomLeftRadius: 12,
-        borderBottomRightRadius: 12,
+        borderBottomRightRadius: 12
     },
-    dropdown2RowStyle: { backgroundColor: '#0f5d39', borderBottomColor: '#C5C5C5' },
+    dropdown2RowStyle: {
+        borderBottomLeftRadius: 12,
+        borderBottomRightRadius: 12
+    },
     dropdown2RowTxtStyle: {
         color: '#FFF',
         textAlign: 'center',
