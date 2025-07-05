@@ -5,10 +5,11 @@ import Icon from '@expo/vector-icons/FontAwesome5';
 import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView, DrawerItem, DrawerNavigationProp } from '@react-navigation/drawer';
 import { useNavigation, ParamListBase, useIsFocused } from '@react-navigation/native';
 import Membresia from '~/screens/Membresia';
+import RelatorioMensal from '~/screens/Relatorio/RelatorioMensal';
 import VisitaCrente from '~/screens/Visitas/VisitaCrente';
 import VisitaNaoCrente from '~/screens/Visitas/VisitaNaoCrente';
-import VisitaPresidio from '~/screens/Visitas/VisitaEnfermo';
-import VisitaEnfermo from '~/screens/Visitas/VisitaPresidio';
+import VisitaPresidio from '~/screens/Visitas/VisitaPresidio';
+import VisitaEnfermo from '~/screens/Visitas/VisitaEnfermo';
 import VisitaHospital from '~/screens/Visitas/VisitaHospital';
 import VisitaEscola from '~/screens/Visitas/VisitaEscola';
 import BatismoInfantil from '~/screens/AtoPastoral/BatismoInfantil';
@@ -40,7 +41,7 @@ interface DrawerItemConfig {
 }
 
 const routes: Route[] = [
-  { name: 'Início', component: RelatorioAnual },
+  { name: 'Início', component: RelatorioMensal },
   { name: 'Relatório Anual', component: RelatorioAnual },
   { name: 'Frequência aos Domingos', component: Membresia },
   { name: 'Estudos', component: Estudo },

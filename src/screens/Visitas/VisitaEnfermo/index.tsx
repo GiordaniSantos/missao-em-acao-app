@@ -1,7 +1,7 @@
 import GenericItem from '~/components/GenericItem';
 import GenericScreen from '~/components/GenericScreen';
 
-export default function VisitaPresidio() {
+export default function VisitaEnfermo() {
     return (
         <GenericScreen
             apiPath="enfermo"

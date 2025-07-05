@@ -22,6 +22,7 @@
     "axios": "^1.10.0",
     "expo": "^53.0.13",
     "expo-linking": "~7.1.5",
+    "expo-sharing": "~13.1.5",
     "expo-status-bar": "~2.2.3",
     "moment": "^2.30.1",
     "react": "19.0.0",
@@ -34,7 +35,8 @@
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "react-redux": "^9.2.0",
-    "yup": "^1.6.1"
+    "yup": "^1.6.1",
+    "expo-file-system": "~18.1.11"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

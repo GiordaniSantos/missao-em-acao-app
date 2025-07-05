@@ -2,13 +2,18 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "~/services/api";
 import { showSweetAlert } from "~/components/sweetAlert";
 
+interface MembresiaItem {
+  nome: string;
+  quantidade: number;
+}
+
 interface DashboardState {
-    visitaCrente: number;
-    visitaNaoCrente: number;
-    visitaPresidio: number;
-    visitaEnfermo: number;
-    visitaHospital: number;
-    visitaEscola: number;
+    crentes: number;
+    incredulos: number;
+    presidios: number;
+    enfermos: number;
+    hospitais: number;
+    escolas: number;
     batismosInfantis: number;
     batismosProfissoes: number;
     bencoesNupciais: number;
@@ -21,18 +26,18 @@ interface DashboardState {
     naoComungante: number;
     loading: boolean;
     refresh: boolean;
-    membresias: any;
+    membresias: MembresiaItem[];
     mes: number;
     ano: number;
 }
 
 const initialState: DashboardState = {
-    visitaCrente: 0,
-    visitaNaoCrente: 0,
-    visitaPresidio: 0,
-    visitaEnfermo: 0,
-    visitaHospital: 0,
-    visitaEscola: 0,
+    crentes: 0,
+    incredulos: 0,
+    presidios: 0,
+    enfermos: 0,
+    hospitais: 0,
+    escolas: 0,
     batismosInfantis: 0,
     batismosProfissoes: 0,
     bencoesNupciais: 0,
@@ -45,7 +50,7 @@ const initialState: DashboardState = {
     naoComungante: 0,
     loading: true,
     refresh: false,
-    membresias: {},
+    membresias: [],
     mes: new Date().getMonth() + 1,
     ano: new Date().getFullYear(),
 };
@@ -53,7 +58,7 @@ const initialState: DashboardState = {
 
 export const fetchRelatorios = createAsyncThunk(
     'dashboard/fetchRelatorios',
-    async ({ mes = initialState.mes, ano = initialState.ano }: { mes?: number, ano?: number } = {}, { dispatch, rejectWithValue }) => {
+    async ({ mes = initialState.mes, ano = initialState.ano }: { mes?: number, ano?: number }, { dispatch, rejectWithValue }) => {
         try {
             const response = await api.get(`/dashboard?mes=${mes}&ano=${ano}`);
  
