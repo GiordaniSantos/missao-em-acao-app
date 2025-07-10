@@ -3,7 +3,7 @@ import { Image, Text, StyleSheet, View, TouchableOpacity, StatusBar, ActivityInd
 import { RouteProp } from '@react-navigation/native';
 import api from '../../services/api';
 import AuthInput from '../../components/AuthInput';
-import { showSweetAlert } from '../../components/sweetAlert';
+import SweetAlert, { showSweetAlert } from '../../components/sweetAlert';
 import { AxiosError } from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStackParamList } from '~/navigation/auth.routes';
@@ -67,6 +67,7 @@ function ModifyPassword({ route, navigation }: ModifyPasswordProps): JSX.Element
 
     return (
         <View style={styles.background}>
+            <SweetAlert />
             <StatusBar backgroundColor="#0f5d39" barStyle="light-content" />
             <Image source={image} style={styles.logo} />
             <View style={styles.formContainer}>

@@ -6,6 +6,7 @@ import AuthInput from '~/components/AuthInput';
 import { loginUser } from '~/store/auth/auth-slice';
 import { AppDispatch, useAppSelector } from '~/store';
 import { AuthStackParamList } from '~/navigation/auth.routes';
+import SweetAlert from '~/components/sweetAlert';
 
 const image: ImageSourcePropType = require('../../../assets/imgs/logo-menu.png');
 
@@ -50,6 +51,7 @@ function Login({ navigation }: LoginProps) {
 
     return (
         <View style={styles.background}>
+            <SweetAlert />
             <StatusBar backgroundColor="#0f5d39" barStyle="light-content" />
             <Image source={image} style={styles.logo} />
             <View style={styles.formContainer}>

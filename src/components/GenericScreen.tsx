@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import api from '../services/api';
-import SweetAlert, { showSweetAlert } from './sweetAlert';
+import { showSweetAlert } from './sweetAlert';
 import { ShowAlertErroResponseApi } from './ShowAlertErrorResponseApi';
 import { actions, fetchRelatorios } from '~/store/dashboard/dashboard-slice';
 import { connect } from 'react-redux';
@@ -156,7 +156,6 @@ function GenericScreen({ apiPath, itemName, renderItemComponent: ItemComponent, 
 
     return (
         <View style={styles.container}>
-            <SweetAlert />
             {itemBuscado && (
                 <UpdateModal
                     isVisible={showModal}

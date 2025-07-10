@@ -3,7 +3,7 @@ import { Image, Text, StyleSheet, View, TouchableOpacity, StatusBar, ActivityInd
 import { AxiosError } from 'axios';
 import api from '~/services/api';
 import AuthInput from '../../components/AuthInput'; 
-import { showSweetAlert } from '../../components/sweetAlert';
+import SweetAlert, { showSweetAlert } from '../../components/sweetAlert';
 
 const image: ImageSourcePropType = require('../../../assets/imgs/logo-menu.png');
 
@@ -50,6 +50,7 @@ function RequestPassword() {
 
     return (
         <View style={styles.background}>
+            <SweetAlert />
             <StatusBar backgroundColor="#0f5d39" barStyle="light-content" />
             <Image source={image} style={styles.logo} />
             <View style={styles.formContainer}>

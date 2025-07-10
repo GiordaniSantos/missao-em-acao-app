@@ -27,6 +27,7 @@ const image: ImageSourcePropType = require('../../assets/imgs/logo-menu.png');
 
 import { AppDispatch } from '~/store';
 import { actions } from '~/store/auth/auth-slice';
+import SweetAlert from '~/components/sweetAlert';
 
 interface Route {
   name: string;
@@ -141,6 +142,7 @@ const CustomDrawerContent: React.FC<CustomDrawerContentProps> = (props) => {
   return (
     <DrawerContentScrollView {...props}>
       <StatusBar translucent backgroundColor="rgba(0, 0, 0, 0.24)" animated />
+      <SweetAlert />
       <View style={styles.container}>
         <View style={styles.userArea}>
           <Image source={image} style={styles.user} />
