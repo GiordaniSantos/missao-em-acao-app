@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "~/services/api";
 import { showSweetAlert } from "~/components/sweetAlert";
+import { hideSplashScreen } from "~/services/hideSplashScreen";
 
 interface MembresiaItem {
   nome: string;
@@ -114,10 +115,12 @@ const dashboardSlice = createSlice({
                 Object.assign(state, action.payload);
                 state.mes = action.payload.mes;
                 state.ano = action.payload.ano;
+                hideSplashScreen();
             })
             .addCase(fetchRelatorios.rejected, (state, action) => {
                 state.loading = false;
                 state.refresh = false;
+                hideSplashScreen();
             });
     }
 });

@@ -2,6 +2,7 @@ import { showSweetAlert } from "~/components/sweetAlert";
 import api from "~/services/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { hideSplashScreen } from "~/services/hideSplashScreen";
 
 interface User {
     id?: bigint;
@@ -177,8 +178,10 @@ const authSlice = createSlice({
                 if (action.payload) {
                     state.user = action.payload.user;
                     state.token = action.payload.token;
+                }else{
+                    hideSplashScreen();
                 }
-                state.isLoading = false;
+                state.isLoading = false;    
             })
             .addCase(verifyUserLogged.rejected, (state) => {
                 state.isLoading = false;

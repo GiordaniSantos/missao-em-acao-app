@@ -2,6 +2,9 @@ import 'react-native-gesture-handler';
 import { StoreWrapper } from '~/store/StoreWrapper';
 import RootStack from './src/navigation';
 import { NavigationContainer } from '@react-navigation/native';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 const linking = {
   prefixes: ['exp://192.168.3.146:8081/--/missaoemacao'],

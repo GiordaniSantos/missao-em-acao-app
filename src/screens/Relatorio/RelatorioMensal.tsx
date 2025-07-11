@@ -176,15 +176,6 @@ const RelatorioMensal: React.FC<RelatorioMensalProps> = ({ navigation }) => {
     }
   }, [dashboardData.mes, dashboardData.ano, obterNomeMes, getDataToExport]);
 
-  if (dashboardData.loading && !localRefreshing) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0f5d39" />
-        <Text style={{ marginTop: 10 }}>Carregando relatórios...</Text>
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
       <CustomAlertExportFile
@@ -193,7 +184,7 @@ const RelatorioMensal: React.FC<RelatorioMensalProps> = ({ navigation }) => {
         type={alertType}
         onClose={hideAlert}
       />
-      <ScrollView refreshControl={<RefreshControl refreshing={localRefreshing || dashboardData.refresh} onRefresh={onRefresh} />}>
+      <ScrollView refreshControl={<RefreshControl refreshing={localRefreshing} onRefresh={onRefresh} />}>
         <View style={styles.headerExcel}>
           <TouchableOpacity style={styles.buttonOpacityExcel} onPress={exportData}>
             <View style={styles.containerViewButtonExcel}>
