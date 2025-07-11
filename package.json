@@ -37,7 +37,8 @@
     "react-redux": "^9.2.0",
     "yup": "^1.6.1",
     "expo-file-system": "~18.1.11",
-    "expo-splash-screen": "~0.30.10"
+    "expo-splash-screen": "~0.30.10",
+    "@react-native-community/netinfo": "11.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
