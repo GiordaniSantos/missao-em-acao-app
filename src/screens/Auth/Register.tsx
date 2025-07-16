@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Image, Text, StyleSheet, View, TouchableOpacity, StatusBar, ActivityIndicator, ImageSourcePropType } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import AuthInput from '../../components/AuthInput';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AppDispatch, useAppSelector } from '~/store';
@@ -9,55 +12,53 @@ import { AuthStackParamList } from '~/navigation/auth.routes';
 import SweetAlert from '~/components/sweetAlert';
 
 const image: ImageSourcePropType = require('../../../assets/imgs/logo-menu.png');
-
-interface RegisterState {
-    name: string;
-    email: string;
-    password: string;
-}
-
 interface AuthState {
     auth: {
         isLoading: boolean;
     };
 }
 
+interface RegisterFormData {
+    name: string;
+    email: string;
+    password: string;
+}
+
 interface RegisterProps {
     navigation: StackNavigationProp<AuthStackParamList, 'Redefinição de Senha'>;
 }
 
-const initialState: RegisterState = {
-    name: '',
-    email: '',
-    password: ''
-};
+const registerSchema = yup.object().shape({
+    name: yup.string().required('Nome é obrigatório').min(3, 'O nome deve ter pelo menos 3 caracteres'),
+    email: yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
+    password: yup.string().required('Senha é obrigatória').min(6, 'A senha deve ter pelo menos 6 caracteres'),
+});
 
 function Register({ navigation }: RegisterProps): React.JSX.Element {
-    const [formData, setFormData] = useState<RegisterState>(initialState);
 
-    const isLoading = useAppSelector((state : AuthState) => state.auth.isLoading);
+    const { control, handleSubmit, formState: { errors, isValid, isSubmitting } } = useForm<RegisterFormData>({
+        mode: 'onChange',
+        resolver: yupResolver(registerSchema),
+        defaultValues: {
+            name: '',
+            email: '',
+            password: ''
+        }
+    });
 
+    const isLoading = useAppSelector((state: AuthState) => state.auth.isLoading);
     const dispatch = useDispatch<AppDispatch>();
 
-    const { name, email, password } = formData;
-
-    const cadastrarUsuario = async () => {
-         const userData = {
+    const cadastrarUsuario = async (data: RegisterFormData) => {
+        const userData = {
             user: {
-                name: name,
-                email: email,
-                password: password
+                name: data.name,
+                email: data.email,
+                password: data.password
             }
         };
         await dispatch(createUser(userData));
     };
-
-    const validations = [
-        email && email.includes('@'),
-        password && password.length >= 6,
-        name && name.trim().length >= 3,
-    ];
-    const validForm = validations.reduce((total, current) => total && current, true);
 
     return (
         <View style={styles.background}>
@@ -65,33 +66,59 @@ function Register({ navigation }: RegisterProps): React.JSX.Element {
             <StatusBar backgroundColor="#0f5d39" barStyle="light-content" />
             <Image source={image} style={styles.logo} />
             <View style={styles.formContainer}>
-                <AuthInput
-                    icon='user'
-                    placeholder='Nome'
-                    value={name}
-                    style={styles.input}
-                    onChangeText={textName => setFormData({ ...formData, name: textName })}
+                <Controller
+                    control={control}
+                    name="name"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <AuthInput
+                            icon='user'
+                            placeholder='Nome'
+                            value={value}
+                            onBlur={onBlur}
+                            onChangeText={onChange}
+                            style={styles.input}
+                        />
+                    )}
                 />
-                <AuthInput
-                    icon='at'
-                    placeholder='E-mail'
-                    value={email}
-                    style={styles.input}
-                    onChangeText={textEmail => setFormData({ ...formData, email: textEmail })}
+                {errors.name && <Text style={styles.errorText}>{errors.name.message}</Text>}
+                <Controller
+                    control={control}
+                    name="email"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <AuthInput
+                            icon='at'
+                            placeholder='E-mail'
+                            value={value}
+                            onBlur={onBlur}
+                            onChangeText={onChange}
+                            style={styles.input}
+                        />
+                    )}
                 />
-                <AuthInput
-                    icon='lock'
-                    placeholder='Senha'
-                    value={password}
-                    secureTextEntry={true}
-                    style={styles.input}
-                    onChangeText={textSenha => setFormData({ ...formData, password: textSenha })}
+                {errors.email && <Text style={styles.errorText}>{errors.email.message}</Text>}
+                <Controller
+                    control={control}
+                    name="password"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <AuthInput
+                            icon='lock'
+                            placeholder='Senha'
+                            value={value}
+                            onBlur={onBlur}
+                            onChangeText={onChange}
+                            secureTextEntry={true}
+                            style={styles.input}
+                        />
+                    )}
                 />
-                <TouchableOpacity onPress={cadastrarUsuario} disabled={!validForm || isLoading}>
-                    <View style={[styles.button, validForm && !isLoading ? {} : { backgroundColor: '#AAA' }]}>
-                        {isLoading ? <ActivityIndicator size="small" color="#fff" style={styles.activityIndicator} /> : null}
+                {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
+                <TouchableOpacity onPress={handleSubmit(cadastrarUsuario)} disabled={!isValid || isSubmitting || isLoading}>
+                    <View style={[styles.button, (!isValid || isSubmitting || isLoading) ? { backgroundColor: '#AAA' } : {}]}>
+                        {isLoading || isSubmitting ? (
+                            <ActivityIndicator size="small" color="#fff" style={styles.activityIndicator} />
+                        ) : null}
                         <Text style={styles.buttonText}>
-                            {isLoading ? 'Registrando' : 'Registrar'}
+                            {isLoading || isSubmitting ? 'Registrando' : 'Registrar'}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -149,6 +176,12 @@ const styles = StyleSheet.create({
         marginLeft: -20,
         marginRight: 15,
     },
+    errorText: {
+        color: 'red',
+        fontSize: 12,
+        marginTop: 0,
+        marginLeft: 10,
+    }
 });
 
 export default Register;
