@@ -1,6 +1,9 @@
-import React, { JSX, useState } from 'react';
+import React, { useState, JSX } from 'react';
 import { Image, Text, StyleSheet, View, TouchableOpacity, StatusBar, ActivityIndicator, ImageSourcePropType } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import api from '../../services/api';
 import AuthInput from '../../components/AuthInput';
 import SweetAlert, { showSweetAlert } from '../../components/sweetAlert';
@@ -10,24 +13,41 @@ import { AuthStackParamList } from '~/navigation/auth.routes';
 
 const image: ImageSourcePropType = require('../../../assets/imgs/logo-menu.png');
 
+interface ModifyPasswordFormData {
+    newPassword: string;
+    confirmPassword: string;
+}
+
 interface ModifyPasswordProps {
     route: RouteProp<AuthStackParamList, 'Redefinir Senha'>;
     navigation: StackNavigationProp<AuthStackParamList, 'Redefinir Senha'>;
 }
 
+const modifyPasswordSchema = yup.object().shape({
+    newPassword: yup.string().required('Nova Senha é obrigatória').min(6, 'A nova senha deve ter pelo menos 6 caracteres'),
+    confirmPassword: yup.string().required('Confirmação de Senha é obrigatória').oneOf([yup.ref('newPassword')], 'As senhas não coincidem'),
+});
+
 function ModifyPassword({ route, navigation }: ModifyPasswordProps): JSX.Element {
     const { token } = route.params;
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [newPassword, setNewPassword] = useState<string>('');
-    const [confirmPassword, setConfirmPassword] = useState<string>('');
 
-    const redefinirSenha = async () => {
+    const { control, handleSubmit, formState: { errors, isValid, isSubmitting } } = useForm<ModifyPasswordFormData>({
+        mode: 'onChange',
+        resolver: yupResolver(modifyPasswordSchema),
+        defaultValues: {
+            newPassword: '',
+            confirmPassword: ''
+        }
+    });
+
+    const redefinirSenha = async (data: ModifyPasswordFormData) => {
         setIsLoading(true);
         try {
             await api.post(`/password/reset/${token}`, {
-                password: newPassword,
-                password_confirmation: confirmPassword
+                password: data.newPassword,
+                password_confirmation: data.confirmPassword
             });
 
             showSweetAlert({
@@ -58,43 +78,51 @@ function ModifyPassword({ route, navigation }: ModifyPasswordProps): JSX.Element
         }
     };
 
-    const validations = [
-        newPassword.length >= 6,
-        confirmPassword === newPassword
-    ];
-
-    const validForm = validations.every(isValid => isValid);
-
     return (
         <View style={styles.background}>
             <SweetAlert />
             <StatusBar backgroundColor="#0f5d39" barStyle="light-content" />
             <Image source={image} style={styles.logo} />
             <View style={styles.formContainer}>
-                <AuthInput
-                    icon="lock"
-                    placeholder="Nova Senha"
-                    value={newPassword}
-                    secureTextEntry={true}
-                    style={styles.input}
-                    onChangeText={setNewPassword}
+                <Controller
+                    control={control}
+                    name="newPassword"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <AuthInput
+                            icon="lock"
+                            placeholder="Nova Senha"
+                            value={value}
+                            onBlur={onBlur}
+                            onChangeText={onChange}
+                            secureTextEntry={true}
+                            style={styles.input}
+                        />
+                    )}
                 />
-
-                <AuthInput
-                    icon="lock"
-                    placeholder="Confirmar Nova Senha"
-                    value={confirmPassword}
-                    secureTextEntry={true}
-                    style={styles.input}
-                    onChangeText={setConfirmPassword}
+                {errors.newPassword && <Text style={styles.errorText}>{errors.newPassword.message}</Text>}
+                <Controller
+                    control={control}
+                    name="confirmPassword"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <AuthInput
+                            icon="lock"
+                            placeholder="Confirmar Nova Senha"
+                            value={value}
+                            onBlur={onBlur}
+                            onChangeText={onChange}
+                            secureTextEntry={true}
+                            style={styles.input}
+                        />
+                    )}
                 />
-                <TouchableOpacity onPress={redefinirSenha} disabled={!validForm || isLoading}>
-                    <View style={[styles.button, (!validForm || isLoading) ? { backgroundColor: '#AAA' } : {}]}>
-                        {isLoading ? (
+                {errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>}
+                <TouchableOpacity onPress={handleSubmit(redefinirSenha)} disabled={!isValid || isSubmitting || isLoading} >
+                    <View style={[styles.button, (!isValid || isSubmitting || isLoading) ? { backgroundColor: '#AAA' } : {}]}>
+                        {isLoading || isSubmitting ? (
                             <ActivityIndicator size="small" color="#fff" style={styles.activityIndicator} />
                         ) : null}
                         <Text style={styles.buttonText}>
-                            {isLoading ? 'Redefinindo Senha' : 'Redefinir Senha'}
+                            {isLoading || isSubmitting ? 'Redefinindo Senha' : 'Redefinir Senha'}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -148,6 +176,12 @@ const styles = StyleSheet.create({
     activityIndicator: {
         marginLeft: -20,
         marginRight: 15
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 12,
+        marginTop: 0,
+        marginLeft: 10,
     },
 });
 

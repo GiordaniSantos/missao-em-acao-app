@@ -1,21 +1,39 @@
 import React, { useState } from 'react';
 import { Image, Text, StyleSheet, View, TouchableOpacity, StatusBar, ActivityIndicator, ImageSourcePropType } from 'react-native';
 import { AxiosError } from 'axios';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import api from '~/services/api';
-import AuthInput from '../../components/AuthInput'; 
+import AuthInput from '../../components/AuthInput';
 import SweetAlert, { showSweetAlert } from '../../components/sweetAlert';
 
 const image: ImageSourcePropType = require('../../../assets/imgs/logo-menu.png');
 
+interface RequestPasswordFormData {
+    email: string;
+}
+
+const requestPasswordSchema = yup.object().shape({
+    email: yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
+});
+
 function RequestPassword() {
-    const [email, setEmail] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const solicitarRedefinicao = async () => {
+    const { control, handleSubmit, formState: { errors, isValid, isSubmitting } } = useForm<RequestPasswordFormData>({
+        mode: 'onChange',
+        resolver: yupResolver(requestPasswordSchema),
+        defaultValues: {
+            email: ''
+        }
+    });
+
+    const solicitarRedefinicao = async (data: RequestPasswordFormData) => {
         setIsLoading(true);
         try {
             await api.post(`/password/reset`, {
-                email: email,
+                email: data.email,
             });
 
             showSweetAlert({
@@ -28,7 +46,6 @@ function RequestPassword() {
                 onClose: () => { },
                 type: 'success',
             });
-            setEmail('');
         } catch (e: any) {
             const error = e as AxiosError<{ message: string }>;
             showSweetAlert({
@@ -37,8 +54,8 @@ function RequestPassword() {
                 showCancelButton: false,
                 cancelButtonText: 'Cancel',
                 confirmButtonText: 'Ok',
-                onConfirm: () => {},
-                onClose: () => {},
+                onConfirm: () => { },
+                onClose: () => { },
                 type: 'danger',
             });
         } finally {
@@ -46,30 +63,32 @@ function RequestPassword() {
         }
     };
 
-    const isValidForm = email.includes('@');
-
     return (
         <View style={styles.background}>
             <SweetAlert />
             <StatusBar backgroundColor="#0f5d39" barStyle="light-content" />
             <Image source={image} style={styles.logo} />
             <View style={styles.formContainer}>
-                <AuthInput
-                    icon='at'
-                    placeholder='E-mail'
-                    value={email}
-                    style={styles.input}
-                    onChangeText={setEmail}
+                <Controller
+                    control={control}
+                    name="email"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <AuthInput
+                            icon='at'
+                            placeholder='E-mail'
+                            value={value}
+                            onBlur={onBlur}
+                            onChangeText={onChange}
+                            style={styles.input}
+                        />
+                    )}
                 />
-
-                <TouchableOpacity
-                    onPress={solicitarRedefinicao}
-                    disabled={!isValidForm || isLoading}
-                >
-                    <View style={[styles.button, (!isValidForm || isLoading) ? styles.buttonDisabled : {}]}>
-                        {isLoading ? <ActivityIndicator size="small" color="#fff" style={styles.activityIndicator} /> : null}
+                {errors.email && <Text style={styles.errorText}>{errors.email.message}</Text>}
+                <TouchableOpacity onPress={handleSubmit(solicitarRedefinicao)} disabled={!isValid || isSubmitting || isLoading} >
+                    <View style={[styles.button, (!isValid || isSubmitting || isLoading) ? styles.buttonDisabled : {}]}>
+                        {isLoading || isSubmitting ? <ActivityIndicator size="small" color="#fff" style={styles.activityIndicator} /> : null}
                         <Text style={styles.buttonText}>
-                            {isLoading ? 'Enviando link para redefinição' : 'Enviar link para redefinição'}
+                            {isLoading || isSubmitting ? 'Enviando link para redefinição' : 'Enviar link para redefinição'}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -121,6 +140,12 @@ const styles = StyleSheet.create({
         marginLeft: -10,
         marginRight: 5,
     },
+    errorText: {
+        color: 'red',
+        fontSize: 12,
+        marginTop: 0,
+        marginLeft: 10,
+    }
 });
 
 export default RequestPassword;
