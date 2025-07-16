@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Image, Text, StyleSheet, View, TouchableOpacity, StatusBar, ActivityIndicator, ImageSourcePropType } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import AuthInput from '~/components/AuthInput';
 import { loginUser } from '~/store/auth/auth-slice';
 import { AppDispatch, useAppSelector } from '~/store';
@@ -16,38 +19,43 @@ interface RootState {
     };
 }
 
+interface LoginFormData {
+    email: string;
+    password: string;
+}
+
 interface LoginProps {
     navigation: StackNavigationProp<AuthStackParamList, 'Entrar'>;
 }
 
-const initialState = {
-    email: '',
-    password: ''
-};
+const loginSchema = yup.object().shape({
+    email: yup.string().required('E-mail é obrigatório').email('E-mail inválido'),
+    password: yup.string().required('Senha é obrigatória').min(6, 'A senha deve ter pelo menos 6 caracteres'),
+});
 
 function Login({ navigation }: LoginProps) {
-    const [email, setEmail] = useState<string>(initialState.email);
-    const [password, setPassword] = useState<string>(initialState.password);
 
-    const isLoading = useAppSelector((state : RootState) => state.auth.isLoading);
+    const { control, handleSubmit, formState: { errors, isValid, isSubmitting } } = useForm<LoginFormData>({
+        mode: 'onChange',
+        resolver: yupResolver(loginSchema),
+        defaultValues: {
+            email: '',
+            password: ''
+        }
+    });
 
+    const isLoading = useAppSelector((state: RootState) => state.auth.isLoading);
     const dispatch = useDispatch<AppDispatch>();
 
-    const handleSignIn = async () => {
+    const handleSignIn = async (data: LoginFormData) => {
         const userData = {
             user: {
-                email: email,
-                password: password
+                email: data.email,
+                password: data.password
             }
         };
         await dispatch(loginUser(userData));
     };
-
-    const validations = [
-        email && email.includes('@'),
-        password && password.length >= 6,
-    ];
-    const validForm = validations.reduce((total, current) => total && current, true);
 
     return (
         <View style={styles.background}>
@@ -55,28 +63,44 @@ function Login({ navigation }: LoginProps) {
             <StatusBar backgroundColor="#0f5d39" barStyle="light-content" />
             <Image source={image} style={styles.logo} />
             <View style={styles.formContainer}>
-                <AuthInput
-                    icon='at'
-                    placeholder='E-mail'
-                    value={email}
-                    style={styles.input}
-                    onChangeText={setEmail}
+                <Controller
+                    control={control}
+                    name="email"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <AuthInput
+                            icon='at'
+                            placeholder='E-mail'
+                            value={value}
+                            onBlur={onBlur}
+                            onChangeText={onChange}
+                            style={styles.input}
+                        />
+                    )}
                 />
-                <AuthInput
-                    icon='lock'
-                    placeholder='Senha'
-                    value={password}
-                    secureTextEntry={true}
-                    style={styles.input}
-                    onChangeText={setPassword}
+                {errors.email && <Text style={styles.errorText}>{errors.email.message}</Text>}
+                <Controller
+                    control={control}
+                    name="password"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <AuthInput
+                            icon='lock'
+                            placeholder='Senha'
+                            value={value}
+                            onBlur={onBlur}
+                            onChangeText={onChange}
+                            secureTextEntry={true}
+                            style={styles.input}
+                        />
+                    )}
                 />
-                <TouchableOpacity onPress={handleSignIn} disabled={!validForm}>
-                    <View style={[styles.button, validForm ? {} : { backgroundColor: '#AAA' }]}>
-                        {isLoading ? (
+                {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
+                <TouchableOpacity onPress={handleSubmit(handleSignIn)} disabled={!isValid || isSubmitting || isLoading} >
+                    <View style={[styles.button, (!isValid || isSubmitting || isLoading) ? { backgroundColor: '#AAA' } : {}]}>
+                        {isLoading || isSubmitting ? (
                             <ActivityIndicator size="small" color="#fff" style={styles.activityIndicator} />
                         ) : null}
                         <Text style={styles.buttonText}>
-                            {isLoading ? 'Entrando' : 'Entrar'}
+                            {isLoading || isSubmitting ? 'Entrando' : 'Entrar'}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -144,6 +168,12 @@ const styles = StyleSheet.create({
         padding: 10,
         marginTop: 10,
     },
+    errorText: {
+        color: 'red',
+        fontSize: 12,
+        marginTop: 0,
+        marginLeft: 10,
+    }
 });
 
 export default Login;
