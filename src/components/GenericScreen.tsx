@@ -145,15 +145,6 @@ function GenericScreen({ apiPath, itemName, renderItemComponent: ItemComponent, 
         setShowModal(true);
     }, [fetchItem]);
 
-    if (loading) {
-        return (
-            <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color="#0f5d39" />
-                <Text style={{ marginTop: 10 }}>Carregando os dados...</Text>
-            </View>
-        );
-    }
-
     return (
         <View style={styles.container}>
             {itemBuscado && (
@@ -179,11 +170,6 @@ function GenericScreen({ apiPath, itemName, renderItemComponent: ItemComponent, 
                             openModal={() => openEditModal(item.id)}
                             onDelete={() => deleteItem(item.id)}
                         />
-                    )}
-                    ListEmptyComponent={() => (
-                        <View style={styles.emptyList}>
-                            <Text style={styles.emptyListText}>Nenhum {itemName} encontrado.</Text>
-                        </View>
                     )}
                     {...FlatListProps}
                 />
