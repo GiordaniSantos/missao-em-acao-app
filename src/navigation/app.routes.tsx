@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Component } from 'react';
 import { useDispatch } from 'react-redux';
-import { Text, View, StyleSheet, StatusBar, Modal, TouchableOpacity, Image, TouchableWithoutFeedback, Linking, ImageSourcePropType } from 'react-native';
+import { Text, View, StyleSheet, StatusBar, Image, ImageSourcePropType } from 'react-native';
 import Icon from '@expo/vector-icons/FontAwesome5';
 import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView, DrawerItem, DrawerNavigationProp } from '@react-navigation/drawer';
 import { useNavigation, ParamListBase, useIsFocused } from '@react-navigation/native';
@@ -22,12 +22,14 @@ import EstudoBiblico from '~/screens/Ministracao/EstudoBiblico';
 import RelatorioAnual from '~/screens/Relatorio/RelatorioAnual';
 import Discipulado from '~/screens/Ministracao/Discipulado';
 import Conta from '~/screens/Conta';
+import OrientacoesDeUso from '~/components/OrientacoesUso';
 
 const image: ImageSourcePropType = require('../../assets/imgs/logo-menu.png');
 
 import { AppDispatch } from '~/store';
 import { actions } from '~/store/auth/auth-slice';
 import SweetAlert from '~/components/sweetAlert';
+import HeaderRightButton from '~/components/HeaderRightButton';
 
 interface Route {
   name: string;
@@ -60,6 +62,7 @@ const routes: Route[] = [
   { name: 'Visitas aos Hospitais', component: VisitaHospital },
   { name: 'Visitas às Escolas', component: VisitaEscola },
   { name: 'Conta', component: Conta },
+  { name: 'Orientações de Uso', component: OrientacoesDeUso },
 ];
 
 const routesDrawerItem: DrawerItemConfig[] = [
@@ -288,19 +291,7 @@ const CustomDrawerContent: React.FC<CustomDrawerContentProps> = (props) => {
 
 const Drawer = createDrawerNavigator();
 
-interface AppRoutesState {
-  isModalVisible: boolean;
-}
-
-export default class AppRoutes extends Component<{}, AppRoutesState> {
-  state = {
-    isModalVisible: false,
-  };
-
-  toggleModal = () => {
-    this.setState(prevState => ({ isModalVisible: !prevState.isModalVisible }));
-  };
-
+export default class AppRoutes extends Component<{}, {}> {
   render() {
     return (
       <Drawer.Navigator
@@ -315,38 +306,7 @@ export default class AppRoutes extends Component<{}, AppRoutesState> {
             fontSize: 16,
             color: '#fff',
           },
-          headerRight: () => (
-            <View style={{ marginRight: 10 }}>
-              <TouchableOpacity onPress={this.toggleModal} activeOpacity={0.1}>
-                <Icon size={24} style={{ color: '#FFF' }} name={'question-circle'} />
-              </TouchableOpacity>
-              <Modal
-                animationType="fade"
-                transparent={true}
-                visible={this.state.isModalVisible}
-                onRequestClose={() => this.toggleModal()}
-              >
-                <TouchableOpacity style={{ flex: 1 }} activeOpacity={1} onPress={() => this.toggleModal()}>
-                  <View style={styles.centeredView}>
-                    <TouchableWithoutFeedback>
-                      <View style={styles.modalView}>
-                        <Text style={styles.modalText}>Orientações de Uso</Text>
-                        <View>
-                          <Text>
-                            Navegue pelo menu à esquerda para começar a utilizar os recursos. {'\n'}{'\n'}
-                            Na tela inicial, arraste o dedo para baixo para manter os dados atualizados. {'\n'}{'\n'}
-                            Para adicionar um registro basta tocar no círculo com ícone de +. {'\n'}{'\n'}
-                            Para remover um registro deslize a caixa para à direita até o final. {'\n'}{'\n'}
-                            Para editar um registro deslize a caixa para à esquerda e clique no ícone de editar.
-                          </Text>
-                        </View>
-                      </View>
-                    </TouchableWithoutFeedback>
-                  </View>
-                </TouchableOpacity>
-              </Modal>
-            </View>
-          ),
+          headerRight: () => <HeaderRightButton />,
         }}
         initialRouteName="Início"
         drawerContent={(props) => <CustomDrawerContent {...props} />}
@@ -403,32 +363,5 @@ const styles = StyleSheet.create({
   separator: {
     borderTopColor: '#cfcfcf',
     borderTopWidth: 1,
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 5,
-    padding: 35,
-    alignItems: 'center',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  modalText: {
-    marginTop: -10,
-    marginBottom: 25,
-    textAlign: 'center',
-    fontWeight: 'bold',
   },
 });
