@@ -7,7 +7,7 @@ import * as SplashScreen from 'expo-splash-screen';
 SplashScreen.preventAutoHideAsync();
 
 const linking = {
-  prefixes: ['exp://192.168.3.146:8081/--/missaoemacao'],
+  prefixes: ['missaoemacao://'],
   config: {
     screens: {
       "Redefinir Senha": {
