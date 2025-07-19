@@ -90,15 +90,15 @@ export const createUser = createAsyncThunk(
 
             showSweetAlert({
                 title: 'Sucesso!',
-                text: 'Usuário criado e logado com sucesso!',
+                text: 'Usuário criado! Clique no botão para realizar o login.',
                 showCancelButton: false,
                 cancelButtonText: 'Cancel',
-                confirmButtonText: 'Ok',
-                onConfirm: () => { },
+                confirmButtonText: 'Logar',
+                onConfirm: () => { dispatch(loginUser({ user })) },
                 onClose: () => { },
                 type: 'success',
             });
-            dispatch(loginUser({ user }));
+            
             return;
         
         } catch (error: any) {

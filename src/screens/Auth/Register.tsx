@@ -114,11 +114,11 @@ function Register({ navigation }: RegisterProps): React.JSX.Element {
                 {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
                 <TouchableOpacity onPress={handleSubmit(cadastrarUsuario)} disabled={!isValid || isSubmitting || isLoading}>
                     <View style={[styles.button, (!isValid || isSubmitting || isLoading) ? { backgroundColor: '#AAA' } : {}]}>
-                        {isLoading || isSubmitting ? (
+                        {isSubmitting ? (
                             <ActivityIndicator size="small" color="#fff" style={styles.activityIndicator} />
                         ) : null}
                         <Text style={styles.buttonText}>
-                            {isLoading || isSubmitting ? 'Registrando' : 'Registrar'}
+                            {isSubmitting ? 'Registrando' : 'Registrar'}
                         </Text>
                     </View>
                 </TouchableOpacity>
