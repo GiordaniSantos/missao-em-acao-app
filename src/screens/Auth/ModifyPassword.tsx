@@ -55,12 +55,12 @@ function ModifyPassword({ route, navigation }: ModifyPasswordProps): JSX.Element
                 text: 'Senha redefinida com sucesso!',
                 showCancelButton: false,
                 cancelButtonText: 'Cancel',
-                confirmButtonText: 'Ok',
-                onConfirm: () => { },
+                confirmButtonText: 'Logar',
+                onConfirm: () => {navigation.navigate('Entrar')},
                 onClose: () => { },
                 type: 'success',
             });
-            navigation.navigate('Entrar');
+            
         } catch (e: any) {
             const error = e as AxiosError<{ message: string }>;
             showSweetAlert({
