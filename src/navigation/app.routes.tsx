@@ -23,6 +23,7 @@ import RelatorioAnual from '~/screens/Relatorio/RelatorioAnual';
 import Discipulado from '~/screens/Ministracao/Discipulado';
 import Conta from '~/screens/Conta';
 import OrientacoesDeUso from '~/components/OrientacoesUso';
+import Sobre from '~/screens/Sobre';
 
 const image: ImageSourcePropType = require('../../assets/imgs/logo-menu.png');
 
@@ -63,6 +64,7 @@ const routes: Route[] = [
   { name: 'Visitas às Escolas', component: VisitaEscola },
   { name: 'Conta', component: Conta },
   { name: 'Orientações de Uso', component: OrientacoesDeUso },
+  { name: 'Sobre', component: Sobre },
 ];
 
 const routesDrawerItem: DrawerItemConfig[] = [
@@ -113,6 +115,7 @@ const routeExpansionMap: { [key: string]: { showVisitacao: boolean; showAtoPasto
   'Relatório Anual': { showPregacao: false, showAtoPastoral: false, showVisitacao: false },
   'Frequência aos Domingos': { showPregacao: false, showAtoPastoral: false, showVisitacao: false },
   'Conta': { showPregacao: false, showAtoPastoral: false, showVisitacao: false },
+  'Sobre': { showPregacao: false, showAtoPastoral: false, showVisitacao: false },
 };
 
 const getActiveRouteState = (routes: any[], index: number, name: string): boolean => {
@@ -269,13 +272,25 @@ const CustomDrawerContent: React.FC<CustomDrawerContentProps> = (props) => {
             label="Conta"
             activeBackgroundColor='#0f5d39'
             activeTintColor='#fff'
-            labelStyle={{ marginLeft: 7 }}
+            labelStyle={{ marginLeft: 5 }}
             style={{marginBottom: 2}} 
             focused={getActiveRouteState(props.state.routes, props.state.index, 'Conta')}
             icon={({ color }) => (
               <Icon size={21} name={'user-circle'} style={{ color: color }} />
             )}
             onPress={() => navigation.navigate("Conta")}
+          />
+          <DrawerItem
+            label="Sobre"
+            activeBackgroundColor='#0f5d39'
+            activeTintColor='#fff'
+            labelStyle={{ marginLeft: 13 }}
+            style={{marginBottom: 2}} 
+            focused={getActiveRouteState(props.state.routes, props.state.index, 'Sobre')}
+            icon={({ color }) => (
+              <Icon size={21} name={'info'} style={{ color: color, marginLeft: 5 }} />
+            )}
+            onPress={() => navigation.navigate("Sobre")}
           />
           <DrawerItem
             label="Sair"
