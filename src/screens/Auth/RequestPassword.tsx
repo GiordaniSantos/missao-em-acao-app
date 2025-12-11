@@ -8,7 +8,7 @@ import api from '~/services/api';
 import AuthInput from '../../components/AuthInput';
 import SweetAlert, { showSweetAlert } from '../../components/sweetAlert';
 
-const image: ImageSourcePropType = require('../../../assets/imgs/logo-menu.png');
+const image: ImageSourcePropType = require('../../../assets/imgs/nova-logo.png');
 
 interface RequestPasswordFormData {
     email: string;
@@ -99,9 +99,9 @@ function RequestPassword() {
 
 const styles = StyleSheet.create({
     logo: {
-        width: 190,
+        width: 340,
         height: 190,
-        marginBottom: -15,
+        marginBottom: 10,
     },
     background: {
         flex: 1,

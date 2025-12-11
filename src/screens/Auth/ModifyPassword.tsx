@@ -11,7 +11,7 @@ import { AxiosError } from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStackParamList } from '~/navigation/auth.routes';
 
-const image: ImageSourcePropType = require('../../../assets/imgs/logo-menu.png');
+const image: ImageSourcePropType = require('../../../assets/imgs/nova-logo.png');
 
 interface ModifyPasswordFormData {
     newPassword: string;
@@ -133,9 +133,9 @@ function ModifyPassword({ route, navigation }: ModifyPasswordProps): JSX.Element
 
 const styles = StyleSheet.create({
     logo: {
-        width: 190,
+        width: 340,
         height: 190,
-        marginBottom: -15,
+        marginBottom: 10,
         resizeMode: 'contain',
     },
     background: {

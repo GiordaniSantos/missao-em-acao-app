@@ -11,7 +11,7 @@ import { createUser } from '~/store/auth/auth-slice';
 import { AuthStackParamList } from '~/navigation/auth.routes';
 import SweetAlert from '~/components/sweetAlert';
 
-const image: ImageSourcePropType = require('../../../assets/imgs/logo-menu.png');
+const image: ImageSourcePropType = require('../../../assets/imgs/nova-logo.png');
 interface AuthState {
     auth: {
         isLoading: boolean;
@@ -134,9 +134,9 @@ function Register({ navigation }: RegisterProps): React.JSX.Element {
 
 const styles = StyleSheet.create({
     logo: {
-        width: 190,
+        width: 340,
         height: 190,
-        marginBottom: -15,
+        marginBottom: 10,
     },
     background: {
         flex: 1,

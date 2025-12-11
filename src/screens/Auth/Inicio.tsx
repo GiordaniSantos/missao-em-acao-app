@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, StatusBar, Image, ImageSourcePropType } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-const image: ImageSourcePropType = require('../../../assets/imgs/logo-menu.png');
+const image: ImageSourcePropType = require('../../../assets/imgs/nova-logo.png');
 
 type RootStackParamList = {
     'Entrar': undefined;
@@ -18,7 +18,6 @@ function Inicio({ navigation }: InicioProps): React.JSX.Element {
         <View style={styles.mainContainer}>
             <StatusBar backgroundColor="#0f5d39" barStyle="light-content" />
             <Image source={image} style={styles.logo} />
-            <Text style={[styles.title, styles.elevation]}>Missão em Ação</Text>
             <View style={styles.formContainer}>
                 <TouchableOpacity onPress={() => navigation.navigate('Entrar')}>
                     <View style={styles.button}>
@@ -47,9 +46,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#0f5d39',
     },
     logo: {
-        width: 190,
+        width: 340,
         height: 190,
-        marginBottom: -25,
+        marginBottom: 2,
     },
     title: {
         color: '#FFF',

@@ -11,7 +11,7 @@ import { AppDispatch, useAppSelector } from '~/store';
 import { AuthStackParamList } from '~/navigation/auth.routes';
 import SweetAlert from '~/components/sweetAlert';
 
-const image: ImageSourcePropType = require('../../../assets/imgs/logo-menu.png');
+const image: ImageSourcePropType = require('../../../assets/imgs/nova-logo.png');
 
 interface RootState {
     auth: {
@@ -121,9 +121,9 @@ function Login({ navigation }: LoginProps) {
 
 const styles = StyleSheet.create({
     logo: {
-        width: 190,
+        width: 340,
         height: 190,
-        marginBottom: -15,
+        marginBottom: 10,
     },
     background: {
         flex: 1,

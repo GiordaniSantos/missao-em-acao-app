@@ -27,7 +27,7 @@ import ReuniaoOracao from '~/screens/Ministracao/ReuniaoOracao';
 import AconselhamentoBiblico from '~/screens/Ministracao/AconselhamentoBiblico';
 import Sobre from '~/screens/Sobre';
 
-const image: ImageSourcePropType = require('../../assets/imgs/logo-menu.png');
+const image: ImageSourcePropType = require('../../assets/imgs/nova-logo.png');
 
 import { AppDispatch } from '~/store';
 import { actions } from '~/store/auth/auth-slice';
@@ -158,7 +158,6 @@ const CustomDrawerContent: React.FC<CustomDrawerContentProps> = (props) => {
       <View style={styles.container}>
         <View style={styles.userArea}>
           <Image source={image} style={styles.user} />
-          <Text style={styles.title}>Missão em Ação</Text>
         </View>
         <View style={styles.containerMenus}>
           {routesDrawerItem.map((route, index) => (
@@ -362,7 +361,7 @@ const styles = StyleSheet.create({
   userArea: {
     marginTop: -500,
     paddingTop: 500,
-    paddingBottom: 5,
+    paddingBottom: 15,
     textAlign: 'center',
     alignItems: 'center',
     justifyContent: 'center',
@@ -370,7 +369,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0f5d39',
   },
   user: {
-    width: 120,
+    width: 270,
     height: 120,
   },
   title: {
