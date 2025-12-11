@@ -23,6 +23,7 @@ import RelatorioAnual from '~/screens/Relatorio/RelatorioAnual';
 import Discipulado from '~/screens/Ministracao/Discipulado';
 import Conta from '~/screens/Conta';
 import OrientacoesDeUso from '~/components/OrientacoesUso';
+import ReuniaoOracao from '~/screens/Ministracao/ReuniaoOracao';
 import Sobre from '~/screens/Sobre';
 
 const image: ImageSourcePropType = require('../../assets/imgs/logo-menu.png');
@@ -52,6 +53,7 @@ const routes: Route[] = [
   { name: 'Sermões', component: Sermao },
   { name: 'Estudos Biblicos', component: EstudoBiblico },
   { name: 'Discipulados', component: Discipulado },
+  { name: 'Reuniões de Oração', component: ReuniaoOracao },
   { name: 'Batismos Infantis', component: BatismoInfantil },
   { name: 'Batismos e Profissões de Fé', component: BatismoProfissao },
   { name: 'Benções Nupciais', component: BencaoNupcial },
@@ -78,6 +80,7 @@ const routesMinistracaoDrawerItem: DrawerItemConfig[] = [
   { name: 'Sermões', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'user-tie' },
   { name: 'Estudos Biblicos', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'bible' },
   { name: 'Discipulados', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'people-arrows' },
+  { name: 'Reuniões de Oração', labelStyle: { marginLeft: 5 }, style: { marginLeft: 9, marginRight: 10, marginBottom: 5 }, icon: 'users' },
 ];
 
 const routesAtoPastoralDrawerItem: DrawerItemConfig[] = [
