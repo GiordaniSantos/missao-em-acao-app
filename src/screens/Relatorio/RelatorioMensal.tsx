@@ -49,6 +49,8 @@ const RelatorioMensal: React.FC<RelatorioMensalProps> = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
   const dashboardData = useAppSelector((state) => state.dashboard);
 
+  console.log(dashboardData)
+
   const currentYear = date.getFullYear();
 
   const [localRefreshing, setLocalRefreshing] = useState<boolean>(false);
@@ -347,10 +349,10 @@ const RelatorioMensal: React.FC<RelatorioMensalProps> = ({ navigation }) => {
           />
           <CardRelatorio
             title="Aconselhamentos Biblicos"
-            value={dashboardData.discipulados}
-            iconName="people-arrows"
+            value={dashboardData.aconselhamentosBiblicos}
+            iconName="comments"
             iconColor="#4e73df"
-            onPress={() => navigation.navigate('Discipulados')}
+            onPress={() => navigation.navigate('Aconselhamentos Biblicos')}
           />
         </View>
         <View style={styles.rowCards}>

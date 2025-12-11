@@ -16,6 +16,8 @@ interface ReportData {
     batismosInfantis: number;
     batismosProfissoes: number;
     bencoesNupciais: number;
+    reunioesOracao: number;
+    aconselhamentosBiblicos: number;
     santasCeias: number;
     estudos: number;
     sermoes: number;
@@ -34,6 +36,8 @@ interface ReportApiResponse {
     batismosInfantis: number;
     batismosProfissoes: number;
     bencoesNupciais: number;
+    reunioesOracao: number;
+    aconselhamentosBiblicos: number;
     santasCeias: number;
     estudos: number;
     sermoes: number;
@@ -65,6 +69,8 @@ function RelatorioAnual({ navigation }: RelatorioAnualProps) {
         batismosInfantis: 0,
         batismosProfissoes: 0,
         bencoesNupciais: 0,
+        reunioesOracao: 0,
+        aconselhamentosBiblicos: 0,
         santasCeias: 0,
         estudos: 0,
         sermoes: 0,
@@ -103,6 +109,8 @@ function RelatorioAnual({ navigation }: RelatorioAnualProps) {
                 batismosInfantis: data.batismosInfantis,
                 batismosProfissoes: data.batismosProfissoes,
                 bencoesNupciais: data.bencoesNupciais,
+                reunioesOracao: data.reunioesOracao,
+                aconselhamentosBiblicos: data.aconselhamentosBiblicos,
                 santasCeias: data.santasCeias,
                 estudos: data.estudos,
                 sermoes: data.sermoes,
@@ -258,6 +266,22 @@ function RelatorioAnual({ navigation }: RelatorioAnualProps) {
                         iconName="people-arrows"
                         iconColor="#4e73df"
                         onPress={() => navigation.navigate('Discipulados')}
+                    />
+                </View>
+                <View style={styles.rowCards}>
+                    <CardRelatorio
+                        title="Reuniões de Oração"
+                        value={reportData.reunioesOracao}
+                        iconName="users"
+                        iconColor="#4e73df"
+                        onPress={() => navigation.navigate('Reuniões de Oração')}
+                    />
+                    <CardRelatorio
+                        title="Aconselhamentos Biblicos"
+                        value={reportData.aconselhamentosBiblicos}
+                        iconName="comments"
+                        iconColor="#4e73df"
+                        onPress={() => navigation.navigate('Aconselhamentos Biblicos')}
                     />
                 </View>
                 <View style={styles.rowCards}>

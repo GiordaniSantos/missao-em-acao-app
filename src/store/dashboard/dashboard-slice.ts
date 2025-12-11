@@ -24,6 +24,7 @@ interface DashboardState {
     estudosBiblicos: number;
     discipulados: number;
     reunioesOracao: number;
+    aconselhamentosBiblicos: number;
     comungante: number;
     naoComungante: number;
     loading: boolean;
@@ -51,6 +52,7 @@ const initialState: DashboardState = {
     comungante: 0,
     naoComungante: 0,
     reunioesOracao: 0,
+    aconselhamentosBiblicos: 0,
     loading: true,
     refresh: false,
     membresias: [],
