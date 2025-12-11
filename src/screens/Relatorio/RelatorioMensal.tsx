@@ -339,6 +339,22 @@ const RelatorioMensal: React.FC<RelatorioMensalProps> = ({ navigation }) => {
         </View>
         <View style={styles.rowCards}>
           <CardRelatorio
+            title="Reuniões de Oração"
+            value={dashboardData.reunioesOracao}
+            iconName="users"
+            iconColor="#4e73df"
+            onPress={() => navigation.navigate('Reuniões de Oração')}
+          />
+          <CardRelatorio
+            title="Aconselhamentos Biblicos"
+            value={dashboardData.discipulados}
+            iconName="people-arrows"
+            iconColor="#4e73df"
+            onPress={() => navigation.navigate('Discipulados')}
+          />
+        </View>
+        <View style={styles.rowCards}>
+          <CardRelatorio
             title="Batismos Infantis"
             value={dashboardData.batismosInfantis}
             iconName="child"
