@@ -134,9 +134,9 @@ function Register({ navigation }: RegisterProps): React.JSX.Element {
 
 const styles = StyleSheet.create({
     logo: {
-        width: 340,
-        height: 190,
-        marginBottom: 10,
+        width: 300,
+        height: 150,
+        marginBottom: 5,
     },
     background: {
         flex: 1,

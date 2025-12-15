@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#0f5d39',
     },
     logo: {
-        width: 340,
-        height: 190,
+        width: 350,
+        height: 150,
         marginBottom: 2,
     },
     title: {

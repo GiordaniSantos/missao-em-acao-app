@@ -121,8 +121,8 @@ function Login({ navigation }: LoginProps) {
 
 const styles = StyleSheet.create({
     logo: {
-        width: 340,
-        height: 190,
+        width: 300,
+        height: 150,
         marginBottom: 10,
     },
     background: {
