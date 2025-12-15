@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ImageSourcePropType, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ParamListBase } from '@react-navigation/native';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
+const image: ImageSourcePropType = require('../../../assets/imgs/logo-colorida.png');
 
 const Sobre = () => {
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>();
@@ -11,18 +12,22 @@ const Sobre = () => {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.content}>
         <Text style={styles.title}>Sobre o Missão em Ação</Text>
+        
         <Text style={styles.paragraph}>
             O Missão em Ação é o aplicativo pensado pela{' '}
             <Text style={styles.boldText}>SECRETARIA DE MISSÕES DO PRESBITÉRIO VALE DOS SINOS - RS (PRVS)</Text>
             , para Missionários do Plano Missionário Cooperativo (PMC), pastores, presbíteros e missionários em geral, oferecendo uma maneira prática, segura e organizada de prestar contas e acompanhar o trabalho missionário e pastoral.{'\n'}
         </Text>
         <Text style={styles.paragraph}>
-        Gerencie de maneira prática o seu trabalho missionário e pastoral. Você pode registrar atividades, monitorar seu campo de trabalho e organizar dados essenciais tanto para missões em locais pioneiros, quanto para igrejas já bem estabelecidas. Tudo na palma da sua mão, com praticidade e eficiência. {'\n'}
+          Gerencie de maneira prática o seu trabalho missionário e pastoral. Você pode registrar atividades, monitorar seu campo de trabalho e organizar dados essenciais tanto para missões em locais pioneiros, quanto para igrejas já bem estabelecidas. Tudo na palma da sua mão, com praticidade e eficiência. {'\n'}
+        </Text>
+        <Text style={{textAlign: 'center'}}>
+          <Image source={image} style={styles.logo} />
         </Text>
       </View>
-        <TouchableOpacity style={styles.homeButton} onPress={() => navigation.navigate('Início')} activeOpacity={0.7}>
-          <Text style={styles.homeButtonText}>Voltar ao Início</Text>
-        </TouchableOpacity>
+      <TouchableOpacity style={styles.homeButton} onPress={() => navigation.navigate('Início')} activeOpacity={0.7}>
+        <Text style={styles.homeButtonText}>Voltar ao Início</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -34,6 +39,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 5,
     backgroundColor: '#f5f5f5',
+  },
+  logo: {
+    width: 200,
+    height: 80,
   },
   content: {
     backgroundColor: 'white',
