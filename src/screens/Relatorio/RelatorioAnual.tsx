@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, RefreshControl, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { View, RefreshControl, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
+import Icon from '@expo/vector-icons/FontAwesome5';
 import { Dropdown } from 'react-native-element-dropdown';
 import CardRelatorio from '~/components/CardRelatorio';
 import { showSweetAlert } from '~/components/sweetAlert';
 import api from '~/services/api';
+import { Buffer } from 'buffer';
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
 
 interface ReportData {
     visitaCrente: number;
@@ -81,6 +85,20 @@ function RelatorioAnual({ navigation }: RelatorioAnualProps) {
     const [loading, setLoading] = useState<boolean>(true);
     const [refreshing, setRefreshing] = useState<boolean>(false);
     const [selectedYear, setSelectedYear] = useState<number>(currentYear);
+    const [isAlertVisible, setIsAlertVisible] = useState<boolean>(false);
+    const [alertMessage, setAlertMessage] = useState<string>('');
+    const [alertType, setAlertType] = useState<'success' | 'error' | 'info'>('info');
+
+    const showAlert = (message: string, type: 'success' | 'error' | 'info') => {
+        setAlertMessage(message);
+        setAlertType(type);
+        setIsAlertVisible(true);
+    };
+
+    const hideAlert = () => {
+        setIsAlertVisible(false);
+        setAlertMessage('');
+    };
 
     const generateYears = (): DropdownItem[] => {
         const years: DropdownItem[] = [];
@@ -136,6 +154,74 @@ function RelatorioAnual({ navigation }: RelatorioAnualProps) {
         }
     }, []);
 
+    const exportarRelatorioPDF = useCallback(async () => {
+        const ano = String(selectedYear);
+        
+        const fileName = `relatorio-pastoral-anual-${ano}.pdf`;
+        const filePath = `${FileSystem.documentDirectory}${fileName}`;
+
+        try {
+            const response = await api.get(`/relatorio/exportar-pdf?ano=${ano}`, {
+                responseType: 'arraybuffer' 
+            });
+
+            const pdfArrayBuffer = response.data;
+
+            const base64Content = Buffer.from(pdfArrayBuffer).toString('base64');
+            
+            await FileSystem.writeAsStringAsync(filePath, base64Content, { 
+                encoding: FileSystem.EncodingType.Base64
+            });
+
+            if (await Sharing.isAvailableAsync()) {
+                await Sharing.shareAsync(filePath, { mimeType: 'application/pdf' });
+                showAlert('Relatório exportado com sucesso como PDF!', 'success');
+            } else {
+                showAlert('Compartilhamento de arquivo não disponível neste dispositivo.', 'info');
+            }
+
+        } catch (e: any) {
+            showAlert(`Erro ao exportar relatório PDF: ${e.message}`, 'error');
+        }
+    }, [selectedYear]);
+
+    const exportarRelatorioExcel = useCallback(async () => {
+        const ano = String(selectedYear);
+        
+        const fileName = `relatorio-pastoral-${ano}.xlsx`;
+        const excelMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        
+        try {
+            const response = await api.get(`/relatorio/exportar-excel?ano=${ano}`, {
+                responseType: 'arraybuffer' 
+            });
+
+            const excelArrayBuffer = response.data;
+
+            const filePath = `${FileSystem.documentDirectory}${fileName}`;
+            
+            const base64Content = Buffer.from(excelArrayBuffer).toString('base64');
+            
+            await FileSystem.writeAsStringAsync(filePath, base64Content, { 
+                encoding: FileSystem.EncodingType.Base64 
+            });
+
+            if (await Sharing.isAvailableAsync()) {
+                await Sharing.shareAsync(filePath, { 
+                    mimeType: excelMimeType,
+                    UTI: 'com.microsoft.excel.xlsx'
+                });
+                showAlert('Relatório exportado com sucesso como Excel!', 'success');
+            } else {
+                showAlert('Compartilhamento não disponível.', 'info');
+            }
+            
+
+        } catch (e: any) {
+            showAlert(`Erro ao exportar relatório Excel: ${e.message}`, 'error');
+        }
+    }, [selectedYear, showAlert]);
+
     useEffect(() => {
         loadRelatorios(selectedYear);
     }, [selectedYear, loadRelatorios]);
@@ -155,9 +241,21 @@ function RelatorioAnual({ navigation }: RelatorioAnualProps) {
 
     return (
         <View style={styles.container}>
-            <ScrollView
-                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-            >
+            <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}>
+                <View style={styles.headerButtonsExport}>
+                    <TouchableOpacity style={styles.buttonOpacityExport} onPress={exportarRelatorioPDF}>
+                        <View style={styles.containerViewButtonExport}>
+                            <Icon name="file-pdf" color="white" size={20} />
+                            <Text style={styles.textButtonExport}>Exportar para PDF</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonOpacityExport} onPress={exportarRelatorioExcel}>
+                        <View style={styles.containerViewButtonExport}>
+                            <Icon name="file-excel" color="white" size={20} />
+                            <Text style={styles.textButtonExport}>Exportar para EXCEL</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.header}>
                     <View style={styles.iconBar}>
                         <Dropdown
@@ -270,14 +368,14 @@ function RelatorioAnual({ navigation }: RelatorioAnualProps) {
                 </View>
                 <View style={styles.rowCards}>
                     <CardRelatorio
-                        title="Reuniões de Oração"
+                        title="Reun. de Oração"
                         value={reportData.reunioesOracao}
-                        iconName="users"
+                        iconName="pray"
                         iconColor="#4e73df"
                         onPress={() => navigation.navigate('Reuniões de Oração')}
                     />
                     <CardRelatorio
-                        title="Aconselhamentos Biblicos"
+                        title="Acons. Biblicos"
                         value={reportData.aconselhamentosBiblicos}
                         iconName="comments"
                         iconColor="#4e73df"
@@ -341,6 +439,31 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#f8f9fc',
     },
+    headerButtonsExport: {
+        marginTop: 11,
+        marginBottom: -5,
+        marginLeft: 10,
+        marginRight: 10,
+        flexDirection: 'row',
+        gap: 8,
+        justifyContent: 'space-between',
+    },
+    buttonOpacityExport: {
+        backgroundColor: '#0f5d39',
+        padding: 10,
+        borderRadius: 8,
+        flex: 1
+    },
+    containerViewButtonExport: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    textButtonExport: {
+        color: 'white',
+        marginLeft: 6,
+        textAlign: 'center',
+    },
     dropdown2BtnStyle: {
         width: '100%',
         backgroundColor: '#0f5d39',
@@ -376,7 +499,7 @@ const styles = StyleSheet.create({
         marginTop: 15,
         marginRight: 10,
         marginLeft: 10,
-        marginBottom: 5,
+        marginBottom: 10,
     },
     elevation: {
         elevation: 18,

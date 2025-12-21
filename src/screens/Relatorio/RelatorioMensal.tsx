@@ -13,6 +13,8 @@ import { useDispatch } from 'react-redux';
 import { fetchRelatorios } from '~/store/dashboard/dashboard-slice';
 import ItemMembresiaRelatorioMensal from '~/components/ItemMembresiaRelatorioMensal';
 import CustomAlertExportFile from '~/components/CustomAlertExportFile';
+import api from '~/services/api';
+import { Buffer } from 'buffer';
 
 interface MembresiaItem {
   nome: string;
@@ -48,8 +50,6 @@ const schema = yup.object().shape({
 const RelatorioMensal: React.FC<RelatorioMensalProps> = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();
   const dashboardData = useAppSelector((state) => state.dashboard);
-
-  console.log(dashboardData)
 
   const currentYear = date.getFullYear();
 
@@ -95,7 +95,6 @@ const RelatorioMensal: React.FC<RelatorioMensalProps> = ({ navigation }) => {
     }
   }, [dispatch, formMes, formAno]);
 
-
   const onRefresh = useCallback(() => {
       setLocalRefreshing(true);
       dispatch(fetchRelatorios({ mes : formMes, ano: formAno})).finally(() => {
@@ -107,76 +106,75 @@ const RelatorioMensal: React.FC<RelatorioMensalProps> = ({ navigation }) => {
     return mesesData.find(m => m.value === numeroMes)?.label || '';
   };
 
-  const getDataToExport = useCallback(() => {
-    let data = [
-      { Menu: 'Visitação', Submenu: 'Visitas aos Crentes', Valor: dashboardData.crentes },
-      { Menu: 'Visitação', Submenu: 'Visitas aos Não Crentes', Valor: dashboardData.incredulos },
-      { Menu: 'Visitação', Submenu: 'Visitas aos Presídios', Valor: dashboardData.presidios },
-      { Menu: 'Visitação', Submenu: 'Visitas aos Enfermos', Valor: dashboardData.enfermos },
-      { Menu: 'Visitação', Submenu: 'Visitas aos Hospitais', Valor: dashboardData.hospitais },
-      { Menu: 'Visitação', Submenu: 'Visitas às Escolas', Valor: dashboardData.escolas },
-      { Menu: 'Ministração', Submenu: 'Estudos', Valor: dashboardData.estudos },
-      { Menu: 'Ministração', Submenu: 'Sermões', Valor: dashboardData.sermoes },
-      { Menu: 'Ministração', Submenu: 'Estudos Biblicos', Valor: dashboardData.estudosBiblicos },
-      { Menu: 'Ministração', Submenu: 'Discipulados', Valor: dashboardData.discipulados },
-      { Menu: 'Ato Pastoral', Submenu: 'Batismos Infantis', Valor: dashboardData.batismosInfantis },
-      { Menu: 'Ato Pastoral', Submenu: 'Batismos/Prof. Fé', Valor: dashboardData.batismosProfissoes },
-      { Menu: 'Ato Pastoral', Submenu: 'Benções Nupciais', Valor: dashboardData.bencoesNupciais },
-      { Menu: 'Ato Pastoral', Submenu: 'Santas Ceias', Valor: dashboardData.santasCeias },
-      { Menu: 'Frequência', Submenu: 'Comungantes', Valor: dashboardData.comungante },
-      { Menu: 'Frequência', Submenu: 'Não Comungantes', Valor: dashboardData.naoComungante },
-    ];
-
-    if (Array.isArray(dashboardData.membresias)) {
-      dashboardData.membresias.forEach((item) => {
-        let itemFormatado = {
-          Menu: 'Frequência',
-          Submenu: item.nome,
-          Valor: item.quantidade,
-        };
-        data.push(itemFormatado);
-      });
-    }
-
-    let headers = [
-      { header: 'Menu', key: 'Menu' },
-      { header: 'Submenu', key: 'Submenu' },
-      { header: 'Valor', key: 'Valor' },
-    ];
-
-    return { headers, data };
-  }, [dashboardData]);
-
-  const exportData = useCallback(async () => {
-    const { headers, data } = getDataToExport();
-    const fileName = `relatorio-${obterNomeMes(String(dashboardData.mes))}-${dashboardData.ano}.csv`;
+  const exportarRelatorioPDF = useCallback(async () => {
+    const mes = String(dashboardData.mes);
+    const ano = String(dashboardData.ano);
+    const nomeMes = obterNomeMes(mes);
+    
+    const fileName = `relatorio-pastoral-mensal-${nomeMes}-${ano}.pdf`;
     const filePath = `${FileSystem.documentDirectory}${fileName}`;
 
     try {
-      const csvHeader = headers.map(h => h.header).join(',');
-      const csvRows = data.map(row =>
-        headers.map(h => {
-          const value = row[h.key as keyof typeof row];
-          return typeof value === 'string' && (value.includes(',') || value.includes('\n'))
-            ? `"${value.replace(/"/g, '""')}"`
-            : value;
-        }).join(',')
-      );
-      const csvContent = [csvHeader, ...csvRows].join('\n');
+      const response = await api.get(`/relatorio/exportar-pdf?mes=${mes}&ano=${ano}`, {
+        responseType: 'arraybuffer' 
+      });
 
-      await FileSystem.writeAsStringAsync(filePath, csvContent, { encoding: FileSystem.EncodingType.UTF8 });
+      const pdfArrayBuffer = response.data;
+
+      const base64Content = Buffer.from(pdfArrayBuffer).toString('base64');
+      
+      await FileSystem.writeAsStringAsync(filePath, base64Content, { 
+          encoding: FileSystem.EncodingType.Base64
+      });
 
       if (await Sharing.isAvailableAsync()) {
-        await Sharing.shareAsync(filePath, { mimeType: 'text/csv' });
-        showAlert('Relatório exportado com sucesso como CSV!', 'success');
+        await Sharing.shareAsync(filePath, { mimeType: 'application/pdf' });
+        showAlert('Relatório exportado com sucesso como PDF!', 'success');
       } else {
         showAlert('Compartilhamento de arquivo não disponível neste dispositivo.', 'info');
       }
+
     } catch (e: any) {
-      //console.error('Erro ao exportar dados:', e);
-      showAlert(`Erro ao exportar relatório: ${e.message}`, 'error');
+      showAlert(`Erro ao exportar relatório PDF: ${e.message}`, 'error');
     }
-  }, [dashboardData.mes, dashboardData.ano, obterNomeMes, getDataToExport]);
+  }, [dashboardData.mes, dashboardData.ano, obterNomeMes, showAlert]);
+
+  const exportarRelatorioExcel = useCallback(async () => {
+    const mes = String(dashboardData.mes);
+    const ano = String(dashboardData.ano);
+    const nomeMes = obterNomeMes(mes);
+    
+    const fileName = `relatorio-pastoral-${nomeMes}-${ano}.xlsx`;
+    const excelMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    
+    try {
+      const response = await api.get(`/relatorio/exportar-excel?mes=${mes}&ano=${ano}`, {
+        responseType: 'arraybuffer' 
+      });
+
+      const excelArrayBuffer = response.data;
+
+      const filePath = `${FileSystem.documentDirectory}${fileName}`;
+      
+      const base64Content = Buffer.from(excelArrayBuffer).toString('base64');
+      
+      await FileSystem.writeAsStringAsync(filePath, base64Content, { 
+        encoding: FileSystem.EncodingType.Base64 
+      });
+
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(filePath, { 
+          mimeType: excelMimeType,
+          UTI: 'com.microsoft.excel.xlsx'
+        });
+        showAlert('Relatório exportado com sucesso como Excel!', 'success');
+      } else {
+        showAlert('Compartilhamento não disponível.', 'info');
+      }
+    } catch (e: any) {
+      showAlert(`Erro ao exportar relatório Excel: ${e.message}`, 'error');
+    }
+  }, [dashboardData.mes, dashboardData.ano, obterNomeMes, showAlert]);
 
   return (
     <View style={styles.container}>
@@ -187,11 +185,17 @@ const RelatorioMensal: React.FC<RelatorioMensalProps> = ({ navigation }) => {
         onClose={hideAlert}
       />
       <ScrollView refreshControl={<RefreshControl refreshing={localRefreshing} onRefresh={onRefresh} />}>
-        <View style={styles.headerExcel}>
-          <TouchableOpacity style={styles.buttonOpacityExcel} onPress={exportData}>
-            <View style={styles.containerViewButtonExcel}>
+        <View style={styles.headerButtonsExport}>
+          <TouchableOpacity style={styles.buttonOpacityExport} onPress={exportarRelatorioPDF}>
+            <View style={styles.containerViewButtonExport}>
+              <Icon name="file-pdf" color="white" size={20} />
+              <Text style={styles.textButtonExport}>Exportar para PDF</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonOpacityExport} onPress={exportarRelatorioExcel}>
+            <View style={styles.containerViewButtonExport}>
               <Icon name="file-excel" color="white" size={20} />
-              <Text style={styles.textButtonExcel}>Exportar para Excel</Text>
+              <Text style={styles.textButtonExport}>Exportar para EXCEL</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -341,14 +345,14 @@ const RelatorioMensal: React.FC<RelatorioMensalProps> = ({ navigation }) => {
         </View>
         <View style={styles.rowCards}>
           <CardRelatorio
-            title="Reuniões de Oração"
+            title="Reun. de Oração"
             value={dashboardData.reunioesOracao}
-            iconName="users"
+            iconName="pray"
             iconColor="#4e73df"
             onPress={() => navigation.navigate('Reuniões de Oração')}
           />
           <CardRelatorio
-            title="Aconselhamentos Biblicos"
+            title="Acons. Biblicos"
             value={dashboardData.aconselhamentosBiblicos}
             iconName="comments"
             iconColor="#4e73df"
@@ -472,23 +476,27 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
-  headerExcel: {
+  headerButtonsExport: {
     marginTop: 11,
     marginBottom: 10,
     marginLeft: 10,
     marginRight: 10,
+    flexDirection: 'row',
+    gap: 8,
+    justifyContent: 'space-between',
   },
-  buttonOpacityExcel: {
+  buttonOpacityExport: {
     backgroundColor: '#0f5d39',
     padding: 10,
     borderRadius: 8,
+    flex: 1
   },
-  containerViewButtonExcel: {
+  containerViewButtonExport: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  textButtonExcel: {
+  textButtonExport: {
     color: 'white',
     marginLeft: 6,
     textAlign: 'center',
