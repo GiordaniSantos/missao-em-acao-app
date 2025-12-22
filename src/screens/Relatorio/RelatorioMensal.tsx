@@ -11,10 +11,10 @@ import * as yup from 'yup';
 import CardRelatorio from '~/components/CardRelatorio';
 import { useDispatch } from 'react-redux';
 import { fetchRelatorios } from '~/store/dashboard/dashboard-slice';
-import ItemMembresiaRelatorioMensal from '~/components/ItemMembresiaRelatorioMensal';
 import CustomAlertExportFile from '~/components/CustomAlertExportFile';
 import api from '~/services/api';
 import { Buffer } from 'buffer';
+import MembresiaCard from '~/components/MembresiaCard';
 
 interface MembresiaItem {
   nome: string;
@@ -189,13 +189,13 @@ const RelatorioMensal: React.FC<RelatorioMensalProps> = ({ navigation }) => {
           <TouchableOpacity style={styles.buttonOpacityExport} onPress={exportarRelatorioPDF}>
             <View style={styles.containerViewButtonExport}>
               <Icon name="file-pdf" color="white" size={20} />
-              <Text style={styles.textButtonExport}>Exportar para PDF</Text>
+              <Text style={styles.textButtonExport}>PDF</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttonOpacityExport} onPress={exportarRelatorioExcel}>
             <View style={styles.containerViewButtonExport}>
               <Icon name="file-excel" color="white" size={20} />
-              <Text style={styles.textButtonExport}>Exportar para EXCEL</Text>
+              <Text style={styles.textButtonExport}>EXCEL</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -407,27 +407,10 @@ const RelatorioMensal: React.FC<RelatorioMensalProps> = ({ navigation }) => {
             onPress={() => navigation.navigate('Frequência aos Domingos')}
           />
         </View>
-        <View style={styles.sectionMembresia}>
-          <View style={styles.cardMembros}>
-            <View style={styles.cardHeader}>
-              <Text style={{ color: '#015b41' }}>Membresia aos Domingos</Text>
-            </View>
-            <View style={styles.cardBody}>
-              <View style={{ width: '100%', height: 'auto' }}>
-                {dashboardData.loading && <ActivityIndicator style={{ justifyContent: 'center', marginTop: 80 }} size="large" color="#015b41" />}
-                {dashboardData.membresias && dashboardData.membresias.length !== 0 ? (
-                  Array.from(dashboardData.membresias).map((item:MembresiaItem, index) => (
-                    <View key={index}>
-                      <ItemMembresiaRelatorioMensal {...item} />
-                    </View>
-                  ))
-                ) : (
-                  <Text style={{ fontSize: 16, color: '#585b58', textAlign: 'center', marginTop: 40 }}>Nenhum resultado encontrado!</Text>
-                )}
-              </View>
-            </View>
-          </View>
-        </View>
+        <MembresiaCard 
+          data={dashboardData.membresias} 
+          loading={dashboardData.loading} 
+        />
       </ScrollView>
     </View>
   );
@@ -498,7 +481,9 @@ const styles = StyleSheet.create({
   },
   textButtonExport: {
     color: 'white',
-    marginLeft: 6,
+    marginLeft: 10,
+    fontWeight: 'bold',
+    fontSize: 13,
     textAlign: 'center',
   },
   header: {
@@ -514,29 +499,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
-  cardHeader: {
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    backgroundColor: '#f8f9fc',
-    borderBottomColor: '#e3e6f0',
-    borderBottomWidth: 1,
-  },
-  cardMembros: {
-    minHeight: 190,
-    height: 'auto',
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#e3e6f0',
-    marginTop: 8,
-    marginRight: 15,
-    marginLeft: 15,
-    marginBottom: 25,
-    borderRadius: 5,
-    flex: 1,
-  },
-  cardBody: {
-    padding: 20,
-  },
   firstSelectButton: {
     flex: 1,
     marginRight: 5,
@@ -544,9 +506,6 @@ const styles = StyleSheet.create({
   secondSelectButton: {
     flex: 1,
     marginLeft: 5,
-  },
-  sectionMembresia: {
-    flex: 1,
   },
 });
 

@@ -20,18 +20,21 @@ function CardRelatorio({
     onPress
 }: CardRelatorioProps) {
     return (
-        <View style={[styles.card, styles.elevation, { borderLeftColor: iconColor }]}>
+        <View style={[styles.card, styles.elevation]}>
             <TouchableOpacity onPress={onPress} activeOpacity={0.4} disabled={!onPress}>
                 <View style={styles.cardBody}>
                     <View style={styles.itens}>
-                        <View>
-                            <Text style={[styles.titleVisita, { color: iconColor }]}>{title}</Text>
-                            <Text style={styles.numeroVisita}>
-                                {value} {isVisita ? 'visitas' : ''}
-                            </Text>
+                        <View style={[styles.iconArea, { backgroundColor: iconColor + '20' }]}>
+                            <FontAwesome5 name={iconName} size={24} color={iconColor} />
                         </View>
                         <View>
-                            <FontAwesome5 size={30} style={styles.iconVisita} name={iconName} />
+                            <Text style={[styles.titleVisita]}>{title}</Text>
+                            <Text style={styles.numeroVisita}>
+                                {value} 
+                                {isVisita && (
+                                    <Text style={styles.labelVisita}> visitas</Text>
+                                )}
+                            </Text>
                         </View>
                     </View>
                 </View>
@@ -50,16 +53,13 @@ const styles = StyleSheet.create({
     },
     card: {
         height: 90,
-        backgroundColor: '#fff',
-        borderTopColor: '#e3e6f0',
-        borderBottomColor: '#e3e6f0',
-        borderRightColor: '#e3e6f0',
+        backgroundColor: '#FFF',
+        borderColor: '#e3e6f0',
         borderWidth: 1,
-        marginVertical: 8,
-        marginHorizontal: 10,
-        borderLeftWidth: 4,
+        marginVertical: 4,
+        marginHorizontal: 6,
         flex: 1,
-        borderRadius: 5,
+        borderRadius: 10,
         overflow: 'hidden',
     },
     cardBody: {
@@ -67,22 +67,34 @@ const styles = StyleSheet.create({
     },
     itens: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
+    },
+    iconArea: {
+        width: 40,
+        height: 40,
+        borderRadius: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 12,
+    },
+    infoArea: {
+        flex: 1,
     },
     titleVisita: {
         fontSize: 11,
-        fontWeight: '700',
+        color: '#5a5c69',
+        fontWeight: '600',
     },
     numeroVisita: {
+        fontSize: 20,
         color: '#5a5c69',
         fontWeight: '700',
-        fontSize: 20,
+        marginTop: 2,
     },
-    iconVisita: {
-        color: '#dddfeb',
-        fontWeight: '900',
-        fontSize: 30,
+    labelVisita: {
+        fontSize: 14,
+        color: '#888',
+        fontWeight: 'normal',
     },
 });
 

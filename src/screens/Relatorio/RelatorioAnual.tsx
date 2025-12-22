@@ -246,13 +246,13 @@ function RelatorioAnual({ navigation }: RelatorioAnualProps) {
                     <TouchableOpacity style={styles.buttonOpacityExport} onPress={exportarRelatorioPDF}>
                         <View style={styles.containerViewButtonExport}>
                             <Icon name="file-pdf" color="white" size={20} />
-                            <Text style={styles.textButtonExport}>Exportar para PDF</Text>
+                            <Text style={styles.textButtonExport}>PDF</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonOpacityExport} onPress={exportarRelatorioExcel}>
                         <View style={styles.containerViewButtonExport}>
                             <Icon name="file-excel" color="white" size={20} />
-                            <Text style={styles.textButtonExport}>Exportar para EXCEL</Text>
+                            <Text style={styles.textButtonExport}>EXCEL</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -461,7 +461,9 @@ const styles = StyleSheet.create({
     },
     textButtonExport: {
         color: 'white',
-        marginLeft: 6,
+        fontWeight: 'bold',
+        fontSize: 13,
+        marginLeft: 10,
         textAlign: 'center',
     },
     dropdown2BtnStyle: {
