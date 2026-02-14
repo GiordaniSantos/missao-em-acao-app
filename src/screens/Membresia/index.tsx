@@ -333,7 +333,7 @@ function Membresia({ loadRelatorios }: MembresiaProps) {
       <AddModalMembresia
         isVisible={showModal}
         tituloHeader={"Nova membresia"}
-        dataSelect={["Primeiro Domingo", "Segundo Domingo", "Terceiro Domingo", "Quarto Domingo"]}
+        dataSelect={["Primeiro Domingo", "Segundo Domingo", "Terceiro Domingo", "Quarto Domingo", "Quinto Domingo"]}
         onCancel={() => setShowModal(false)}
         onSave={addMembresia}
         userId={userId}
@@ -342,7 +342,7 @@ function Membresia({ loadRelatorios }: MembresiaProps) {
         isVisible={showModalEdit}
         loading={loadingItemBuscado}
         itemBuscado={membresiaBuscado}
-        dataSelect={["Primeiro Domingo", "Segundo Domingo", "Terceiro Domingo", "Quarto Domingo"]}
+        dataSelect={["Primeiro Domingo", "Segundo Domingo", "Terceiro Domingo", "Quarto Domingo", "Quinto Domingo"]}
         tituloHeader={"Editar Membresia"}
         onCancel={() => setShowModalEdit(false)}
         onUpdate={updateMembresia}
