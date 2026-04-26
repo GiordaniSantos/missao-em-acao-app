@@ -25,6 +25,8 @@ interface ReportData {
     santasCeias: number;
     estudos: number;
     sermoes: number;
+    reunioesConselho: number;
+    sociedadesInternas: number;
     estudosBiblicos: number;
     discipulados: number;
     membresias: number;
@@ -45,6 +47,8 @@ interface ReportApiResponse {
     santasCeias: number;
     estudos: number;
     sermoes: number;
+    reunioesConselho: number;
+    sociedadesInternas: number;
     estudosBiblicos: number;
     discipulados: number;
     membresias: number;
@@ -78,6 +82,8 @@ function RelatorioAnual({ navigation }: RelatorioAnualProps) {
         santasCeias: 0,
         estudos: 0,
         sermoes: 0,
+        reunioesConselho: 0,
+        sociedadesInternas: 0,
         estudosBiblicos: 0,
         discipulados: 0,
         membresias: 0,
@@ -135,6 +141,8 @@ function RelatorioAnual({ navigation }: RelatorioAnualProps) {
                 estudosBiblicos: data.estudosBiblicos,
                 discipulados: data.discipulados,
                 membresias: data.membresias,
+                reunioesConselho: data.reunioesConselho,
+                sociedadesInternas: data.sociedadesInternas,
             });
         } catch (error: any) {
             const errorMessage = error.response && error.response.data && error.response.data.message ? error.response.data.message : 'Erro ao carregar relatórios.';
@@ -336,6 +344,16 @@ function RelatorioAnual({ navigation }: RelatorioAnualProps) {
                 </View>
                 <View style={styles.rowCards}>
                     <CardRelatorio
+                        title="Sociedades Internas"
+                        value={reportData.sociedadesInternas}
+                        isVisita={true}
+                        iconName="user-friends"
+                        iconColor="#f6c23e"
+                        onPress={() => navigation.navigate('Visitas às Sociedades Internas')}
+                    />
+                </View>
+                <View style={styles.rowCards}>
+                    <CardRelatorio
                         title="Estudos"
                         value={reportData.estudos}
                         iconName="book"
@@ -412,6 +430,15 @@ function RelatorioAnual({ navigation }: RelatorioAnualProps) {
                         iconName="wine-glass-alt"
                         iconColor="#85102f"
                         onPress={() => navigation.navigate('Santas Ceias')}
+                    />
+                </View>
+                <View style={styles.rowCards}>
+                    <CardRelatorio
+                        title="Reuniões do Conselho"
+                        value={reportData.reunioesConselho}
+                        iconName="gavel"
+                        iconColor="#85102f"
+                        onPress={() => navigation.navigate('Reuniões do Conselho')}
                     />
                 </View>
                 <View style={styles.rowCards}>

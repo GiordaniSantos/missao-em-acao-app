@@ -12,10 +12,12 @@ import VisitaPresidio from '~/screens/Visitas/VisitaPresidio';
 import VisitaEnfermo from '~/screens/Visitas/VisitaEnfermo';
 import VisitaHospital from '~/screens/Visitas/VisitaHospital';
 import VisitaEscola from '~/screens/Visitas/VisitaEscola';
+import VisitaSociedadeInterna from '~/screens/Visitas/VisitaSociedadeInterna';
 import BatismoInfantil from '~/screens/AtoPastoral/BatismoInfantil';
 import BatismoProfissao from '~/screens/AtoPastoral/BatismoProfissao';
 import BencaoNupcial from '~/screens/AtoPastoral/BencaoNupcial';
 import SantaCeia from '~/screens/AtoPastoral/SantaCeia';
+import ReuniaoConselho from '~/screens/AtoPastoral/ReuniaoConselho';
 import Estudo from '~/screens/Ministracao/Estudo';
 import Sermao from '~/screens/Ministracao/Sermao';
 import EstudoBiblico from '~/screens/Ministracao/EstudoBiblico';
@@ -60,12 +62,14 @@ const routes: Route[] = [
   { name: 'Batismos e Profissões de Fé', component: BatismoProfissao },
   { name: 'Benções Nupciais', component: BencaoNupcial },
   { name: 'Santas Ceias', component: SantaCeia },
+  { name: 'Reuniões do Conselho', component: ReuniaoConselho },
   { name: 'Visitas aos Crentes', component: VisitaCrente },
   { name: 'Visitas aos Não Crentes', component: VisitaNaoCrente },
   { name: 'Visitas aos Presídios', component: VisitaPresidio },
   { name: 'Visitas aos Enfermos', component: VisitaEnfermo },
   { name: 'Visitas aos Hospitais', component: VisitaHospital },
   { name: 'Visitas às Escolas', component: VisitaEscola },
+  { name: 'Visitas às Sociedades Internas', component: VisitaSociedadeInterna },
   { name: 'Conta', component: Conta },
   { name: 'Orientações de Uso', component: OrientacoesDeUso },
   { name: 'Sobre', component: Sobre },
@@ -91,6 +95,7 @@ const routesAtoPastoralDrawerItem: DrawerItemConfig[] = [
   { name: 'Batismos e Profissões de Fé', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'praying-hands' },
   { name: 'Benções Nupciais', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'hand-holding-heart' },
   { name: 'Santas Ceias', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'wine-glass-alt' },
+  { name: 'Reuniões do Conselho', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'gavel' },
 ];
 
 const routesVisitacaoDrawerItem: DrawerItemConfig[] = [
@@ -100,6 +105,7 @@ const routesVisitacaoDrawerItem: DrawerItemConfig[] = [
   { name: 'Visitas aos Enfermos', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'syringe' },
   { name: 'Visitas aos Hospitais', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'hospital' },
   { name: 'Visitas às Escolas', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'school' },
+  { name: 'Visitas às Sociedades Internas', labelStyle: { marginLeft: 5 }, style: { marginLeft: 10, marginRight: 10, marginBottom: 5 }, icon: 'user-friends' },
 ];
 
 const routeExpansionMap: { [key: string]: { showVisitacao: boolean; showAtoPastoral: boolean; showPregacao: boolean } } = {

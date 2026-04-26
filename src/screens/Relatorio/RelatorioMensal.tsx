@@ -313,6 +313,16 @@ const RelatorioMensal: React.FC<RelatorioMensalProps> = ({ navigation }) => {
         </View>
         <View style={styles.rowCards}>
           <CardRelatorio
+            title="Sociedades Internas"
+            value={dashboardData.sociedadesInternas}
+            isVisita={true}
+            iconName="user-friends"
+            iconColor="#f6c23e"
+            onPress={() => navigation.navigate('Visitas às Sociedades Internas')}
+          />
+        </View>
+        <View style={styles.rowCards}>
+          <CardRelatorio
             title="Estudos"
             value={dashboardData.estudos}
             iconName="book"
@@ -389,6 +399,15 @@ const RelatorioMensal: React.FC<RelatorioMensalProps> = ({ navigation }) => {
             iconName="wine-glass-alt"
             iconColor="#85102f"
             onPress={() => navigation.navigate('Santas Ceias')}
+          />
+        </View>
+        <View style={styles.rowCards}>
+          <CardRelatorio
+            title="Reuniões do Conselho"
+            value={dashboardData.reunioesConselho}
+            iconName="gavel"
+            iconColor="#85102f"
+            onPress={() => navigation.navigate('Reuniões do Conselho')}
           />
         </View>
         <View style={styles.rowCards}>

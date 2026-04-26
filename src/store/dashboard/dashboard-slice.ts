@@ -30,6 +30,8 @@ interface DashboardState {
     loading: boolean;
     refresh: boolean;
     membresias: MembresiaItem[];
+    reunioesConselho: number;
+    sociedadesInternas: number;
     mes: number;
     ano: number;
 }
@@ -53,6 +55,8 @@ const initialState: DashboardState = {
     naoComungante: 0,
     reunioesOracao: 0,
     aconselhamentosBiblicos: 0,
+    reunioesConselho: 0,
+    sociedadesInternas: 0,
     loading: true,
     refresh: false,
     membresias: [],
